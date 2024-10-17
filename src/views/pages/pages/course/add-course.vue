@@ -243,29 +243,96 @@
                             </div>
                             <div class="lecture-body">
                               <div style="display: flex; justify-content: center; align-items: center;">
-                                <a href="javascript:void(0);" class="btn-icon" v-if="!lecture.showQuizInput && !lecture.showVideoInput && !lecture.showAssignmentInput" @click="addQuiz(lecture)" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center; margin: 5px;">
-                                  <i class="fas fa-question-circle" style="font-size: 24px; margin-right: 5px;"></i> <span>Quiz</span>
-                                </a>
-                                <a href="javascript:void(0);" class="btn-icon" v-if="!lecture.showQuizInput && !lecture.showVideoInput && !lecture.showAssignmentInput" @click="addVideo(lecture)" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center; margin: 5px;">
-                                  <i class="fas fa-video" style="font-size: 24px; margin-right: 5px;"></i> <span>Video</span>
-                                </a>
-                                <a href="javascript:void(0);" class="btn-icon" v-if="!lecture.showQuizInput && !lecture.showVideoInput && !lecture.showAssignmentInput" @click="addAssignment(lecture)" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center; margin: 5px;">
-                                  <i class="fas fa-tasks" style="font-size: 24px; margin-right: 5px;"></i> <span>Assignment</span>
-                                </a>
+                                <div style="margin: 5px;">
+          <!-- quiz -->
+                                  <template v-if="!lecture.quiz || !lecture.quiz.title">
+                                    <a href="javascript:void(0);" class="btn-icon" @click="addQuiz(lecture)" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center;">
+                                      <i class="fas fa-question-circle" style="font-size: 24px; margin-right: 5px;"></i>
+                                      <span>Quiz</span>
+                                    </a>
+                                  </template>
+                                  
+                                  <!-- Nếu quiz đã có tiêu đề thì hiển thị tiêu đề kèm nút chỉnh sửa -->
+                                  <template v-else>
+                                    <div style="display: flex; align-items: center;">
+                                      <span style="margin-right: 10px;">Quiz: {{ lecture.quiz.title }}</span>
+                                      <!-- Nút chỉnh sửa quiz để cập nhật tiêu đề -->
+                                      <a href="javascript:void(0);" class="btn-icon" @click="addQuiz(lecture)" style="border: 1px solid #ccc; padding: 5px;">
+                                        <i class="fas fa-edit" style="font-size: 20px;"></i>
+                                      </a>
+                                    </div>
+                                  </template>
+                                </div>
+
+                                <template v-if="!lecture.quiz || !lecture.quiz.title">
+            <!-- Nút Video -->
+                                  <a href="javascript:void(0);" class="btn-icon" v-if="!lecture.showVideoInput && !lecture.showQuizInput && !lecture.showAssignmentInput" @click="addVideo(lecture)" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center; margin: 5px;">
+                                    <i class="fas fa-video" style="font-size: 24px; margin-right: 5px;"></i> <span>Video</span>
+                                  </a>
+
+          <!-- Nút Assignment -->
+                                  <a href="javascript:void(0);" class="btn-icon" v-if="!lecture.showAssignmentInput && !lecture.showQuizInput && !lecture.showVideoInput" @click="addAssignment(lecture)" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center; margin: 5px;">
+                                    <i class="fas fa-tasks" style="font-size: 24px; margin-right: 5px;"></i> <span>Assignment</span>
+                                  </a>
+                                </template>
                               </div>
-                              <div v-if="lecture.showQuizInput" class="input-group" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-question-circle" style="margin-right: 10px;"></i>
-                                <input type="text" class="form-control form-control-sm" placeholder="Enter quiz details" style="flex: 1;" />
+
+                              <!-- Quiz Input -->
+                              <div v-if="lecture.showQuizInput" class="quiz-input" style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+                                <div class="row mb-3" style="display: flex; align-items: center; margin-bottom: 15px;">
+                                  <label style="flex: 0 0 20%; font-weight: bold;">Title Quiz</label>
+                                  <div style="flex: 1;">
+                                    <input type="text" v-model="lecture.quizTitle" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;" placeholder="Enter title quiz" />
+                                  </div>
+                                </div>
+                                <div class="row mb-3" style="display: flex; justify-content: flex-start; margin-bottom: 15px;">
+                                  <button @click="saveQuiz(lecture)" style="padding: 6px 12px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px; font-size: 14px; width: 100px;">
+                                    Save Quiz
+                                  </button>
+                                  <button @click="addQuestionToQuiz(lecture.quiz)" style="padding: 6px 12px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; width: 150px;">
+                                    Add Question
+                                  </button>
+                                  <button @click="lecture.showQuizInput = false" style="padding: 6px 12px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; width: 100px; margin-left: 10px;">
+                                    Cancel
+                                  </button>
+                                </div>
+
+                                <!-- Hiển thị các câu hỏi -->
+                                <div v-for="(question, index) in lecture.quiz.questions" :key="question.title" style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px; background-color: white;">
+                                  <h5 style="font-weight: bold; color: #333;">{{ question.title }}</h5>
+
+                                  <button @click="editQuestionTitle(question)" style="padding: 5px 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; margin-right: 10px; cursor: pointer; font-size: 12px;">
+                                    Edit Question
+                                  </button>
+
+                                  <button @click="deleteQuestion(lecture, index)" style="padding: 5px 10px; background-color: #dc3545; color: white; border: none; border-radius: 4px; margin-right: 10px; cursor: pointer; font-size: 12px;">
+                                    Delete Question
+                                  </button>
+
+                                  <button @click="editOptionToQuestion(question)" style="padding: 5px 10px; background-color: #6c757d; color: white; border: none; border-radius: 4px; margin-bottom: 10px; cursor: pointer; font-size: 12px;">
+                                    Edit Option
+                                  </button>
+
+                                  <div v-for="option in question.options" :key="option.text" style="display: flex; align-items: center; margin-bottom: 5px;">
+                                    <input type="checkbox" v-model="option.isCorrect" style="margin-right: 10px;" />
+                                    <span>{{ option.text }}</span>
+                                  </div>
+                                </div>
                               </div>
+
+                              <!-- Video Input -->
                               <div v-if="lecture.showVideoInput" class="input-group" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center;">
                                 <i class="fas fa-video" style="margin-right: 10px;"></i>
                                 <input type="file" class="form-control form-control-sm" @change="uploadVideo($event, lecture)" style="flex: 1;" />
                               </div>
+
+                              <!-- Assignment Input -->
                               <div v-if="lecture.showAssignmentInput" class="input-group" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center;">
                                 <i class="fas fa-tasks" style="margin-right: 10px;"></i>
                                 <input type="text" class="form-control form-control-sm" placeholder="Enter assignment details" style="flex: 1;" />
                               </div>
                             </div>
+
                           </div>
                         </div>
                       </div>
@@ -312,6 +379,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import LecturePopup from "@/components/LecturePopup.vue";
 import SectionPopup from "@/components/SectionPopup.vue";
 import axios from "axios";
+import Swal from 'sweetalert2';
 export default {
   components: {
     LecturePopup,
@@ -382,6 +450,7 @@ export default {
           this.sections.push({
             title: sectionName,
             lectures: [],
+            
           });
         }
       }
@@ -401,6 +470,11 @@ export default {
           this.currentSection.lectures.push({
             title: lectureName,
             showVideoInput: false,
+            showQuizInput: false,
+            showAssignmentInput: false,
+            quiz: {
+              title: ''
+            }
           });
         }
       }
@@ -413,7 +487,227 @@ export default {
       this.showLecturePopup = false;
     },
     addQuiz(lecture) {
-      lecture.showQuizInput = true;
+      if (!lecture.quiz || !lecture.quiz.title) {
+        lecture.quiz = {
+          title: '',
+          questions: []  
+        };
+        lecture.showQuizInput = true; 
+      } else {
+        Swal.fire({
+          title: `Title Quiz: ${lecture.quiz.title}`,
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonText: 'Edit',
+          cancelButtonText: 'Delete',
+          showCloseButton: true,
+          focusConfirm: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Người dùng chọn Edit
+            lecture.showQuizInput = true;
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            // Người dùng chọn Delete
+            this.deleteQuiz(lecture);  // Gọi hàm xóa quiz
+          }
+        });
+      }
+    },
+    saveQuiz(lecture) {
+      // Lưu lại tiêu đề quiz sau khi người dùng nhập
+      lecture.quiz.title = lecture.quizTitle;
+
+      // Xóa đoạn mã kiểm tra lessonId
+      lecture.showQuizInput = false;
+        },
+    deleteQuiz(lecture) {
+      // Xóa quiz trong đối tượng lecture
+      lecture.quiz = null;
+      lecture.showQuizInput = false;
+      Swal.fire('Deleted quiz', '', 'success');
+    },
+    addQuestionToQuiz(quiz) {
+      Swal.fire({
+        title: "Enter question title:",
+        input: "text",
+        inputPlaceholder: "Question title",
+        showCancelButton: true,
+        confirmButtonText: "Save",
+        cancelButtonText: "Cancel",
+        inputValidator: (value) => {
+          if (!value) {
+            return "You need to enter a question title!";
+          }
+          const existingQuestion = quiz.questions.find(q => q.title === value);
+          if (existingQuestion) {
+            return "This question already exists.";
+          }
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Select question type:",
+            input: "radio",
+            inputOptions: {
+              one: '4 option',
+              multiple: 'Many option'
+            },
+            inputValidator: (value) => {
+              if (!value) {
+                return "You need to choose the question type!";
+              }
+            }
+          }).then((typeResult) => {
+            if (typeResult.isConfirmed) {
+              let question = {
+                title: result.value,
+                type: typeResult.value,
+                options: []
+              };
+
+              // Function to generate HTML for options
+              const generateOptionsHTML = (numOptions) => {
+                return `
+                  <div style="display: flex; flex-direction: column; gap: 10px;">
+                    ${Array.from({ length: numOptions }, (_, i) => `
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <label for="option${i + 1}" style="flex: 1; font-weight: bold">Option ${i + 1}:</label>
+                        <input type="text" id="option${i + 1}" class="swal2-input" style="flex: 3;" placeholder="Option ${i + 1}">
+                      </div>
+                    `).join('')}
+                  </div>
+                `;
+              };
+
+              const saveQuestion = (numOptions) => {
+                Swal.fire({
+                  title: 'Edit options',
+                  html: generateOptionsHTML(numOptions),
+                  focusConfirm: false,
+                  confirmButtonText: 'Save question',
+                  showCancelButton: true,
+                  cancelButtonText: 'Cancel',
+                  preConfirm: () => {
+                    let isValid = true;
+                    let options = [];
+
+                    for (let i = 1; i <= numOptions; i++) {
+                      let optionText = document.getElementById(`option${i}`).value.trim();
+                      
+                      // Validate if the option is empty
+                      if (!optionText) {
+                        isValid = false;
+                        Swal.showValidationMessage(`Option ${i} cannot be empty!`);
+                        break;
+                      }
+
+                      options.push({
+                        text: optionText,
+                        isCorrect: false
+                      });
+                    }
+
+                    if (isValid) {
+                      // Save valid options to the question
+                      question.options = options;
+                      quiz.questions.push(question);
+                    }
+
+                    return isValid;
+                  }
+                });
+              };
+
+              if (typeResult.value === 'one') {
+                saveQuestion(4); // Default to 4 options for "one correct answer" type
+              } else {
+                // Input the number of options for "many correct answers" type
+                Swal.fire({
+                  title: "Enter the number of options:",
+                  input: "number",
+                  inputPlaceholder: "Number of options",
+                  inputValidator: (value) => {
+                    if (!value || value <= 0) {
+                      return "You need to enter a valid number of options!";
+                    }
+                    else if(value>10)
+                    {
+                      return "Option must be less than 10"
+                    }
+                  }
+                }).then((numberResult) => {
+                  if (numberResult.isConfirmed) {
+                    saveQuestion(parseInt(numberResult.value));
+                  }
+                });
+              }
+            }
+          });
+        }
+      });
+    },
+    editQuestionTitle(question) {
+    // Kiểm tra xem question có undefined không
+    if (!question) {
+      console.error("Unknown question!");
+      return;
+    }
+
+    Swal.fire({
+      title: "Edit question title:",
+      input: "text",
+      inputPlaceholder: "New title",
+      inputValue: question.title, // Hiển thị tiêu đề hiện tại
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      cancelButtonText: "Cancel",
+      inputValidator: (value) => {
+        if (!value) {
+          return "You need to enter a title!";
+        }
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Cập nhật tiêu đề của câu hỏi
+        question.title = result.value;
+        Swal.fire("Saved!", "Question title has been updated.", "success");
+      }
+    });
+    },
+    deleteQuestion(lecture, index) {
+      // Hiển thị thông báo xác nhận việc xóa
+      if (confirm("Bạn có chắc chắn muốn xóa câu hỏi này?")) {
+        // Xóa câu hỏi trong mảng 'questions' của lecture tại vị trí index
+        lecture.quiz.questions.splice(index, 1);
+        Swal.fire('Deleted!', 'The question has been deleted.', 'success');
+      }
+    },
+    editOptionToQuestion(question) {
+      let htmlOptions = `
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          ${question.options.map((option, index) => `
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <label for="option${index + 1}" style="flex: 1; font-weight: bold">Option ${index + 1}:</label>
+              <input type="text" id="option${index + 1}" class="swal2-input" style="flex: 3;" placeholder="${option.text}">
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      Swal.fire({
+        title: 'Edit options',
+        html: htmlOptions,
+        focusConfirm: false,
+        confirmButtonText: 'Save changes',
+        showCancelButton: true,
+        cancelButtonText: 'Cancel',
+        preConfirm: () => {
+          // Cập nhật lại nội dung của từng tùy chọn
+          question.options.forEach((option, index) => {
+            option.text = document.getElementById(`option${index + 1}`).value;
+          });
+        }
+      });
     },
     addVideo(lecture) {
       lecture.showVideoInput = true;
