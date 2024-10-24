@@ -13,175 +13,7 @@
                 <h4>Your cart (03 items)</h4>
               </div>
               <div class="cart-group">
-                <div class="row">
-                  <div class="col-lg-12 col-md-12 d-flex">
-                    <div class="course-box course-design list-course d-flex">
-                      <div class="product">
-                        <div class="product-img">
-                          <router-link to="/course/course-details">
-                            <img
-                              class="img-fluid"
-                              alt=""
-                              src="@/assets/img/course/course-10.jpg"
-                            />
-                          </router-link>
-                          <div class="price">
-                            <h3 class="free-color">FREE</h3>
-                          </div>
-                        </div>
-                        <div class="product-content">
-                          <div class="head-course-title">
-                            <h3 class="title">
-                              <router-link to="/course/course-details"
-                                >Information About UI/UX Design
-                                Degree</router-link
-                              >
-                            </h3>
-                          </div>
-                          <div
-                            class="course-info d-flex align-items-center border-bottom-0 pb-0"
-                          >
-                            <div class="rating-img d-flex align-items-center">
-                              <img src="@/assets/img/icon/icon-01.svg" alt="" />
-                              <p>12+ Lesson</p>
-                            </div>
-                            <div class="course-view d-flex align-items-center">
-                              <img src="@/assets/img/icon/icon-02.svg" alt="" />
-                              <p>9hr 30min</p>
-                            </div>
-                          </div>
-                          <div class="rating">
-                            <i class="fas fa-star filled me-1"></i>
-                            <i class="fas fa-star filled me-1"></i>
-                            <i class="fas fa-star filled me-1"></i>
-                            <i class="fas fa-star filled me-1"></i>
-                            <i class="fas fa-star me-1"></i>
-                            <span class="d-inline-block average-rating"
-                              ><span>4.0</span> (15)</span
-                            >
-                          </div>
-                        </div>
-                        <div class="cart-remove">
-                          <a href="javascript:;" class="btn btn-primary"
-                            >Remove</a
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-12 col-md-12 d-flex">
-                    <div class="course-box course-design list-course d-flex">
-                      <div class="product">
-                        <div class="product-img">
-                          <router-link to="/course/course-details">
-                            <img
-                              class="img-fluid"
-                              alt=""
-                              src="@/assets/img/course/course-11.jpg"
-                            />
-                          </router-link>
-                          <div class="price">
-                            <h3>$300 <span>$99.00</span></h3>
-                          </div>
-                        </div>
-                        <div class="product-content">
-                          <div class="head-course-title">
-                            <h3 class="title">
-                              <router-link to="/course/course-details"
-                                >Wordpress for Beginners - Master Wordpress
-                                Quickly</router-link
-                              >
-                            </h3>
-                          </div>
-                          <div
-                            class="course-info d-flex align-items-center border-bottom-0 pb-0"
-                          >
-                            <div class="rating-img d-flex align-items-center">
-                              <img src="@/assets/img/icon/icon-01.svg" alt="" />
-                              <p>10+ Lesson</p>
-                            </div>
-                            <div class="course-view d-flex align-items-center">
-                              <img src="@/assets/img/icon/icon-02.svg" alt="" />
-                              <p>7hr 20min</p>
-                            </div>
-                          </div>
-                          <div class="rating">
-                            <i class="fas fa-star filled me-1"></i>
-                            <i class="fas fa-star filled me-1"></i>
-                            <i class="fas fa-star filled me-1"></i>
-                            <i class="fas fa-star filled me-1"></i>
-                            <i class="fas fa-star me-1"></i>
-                            <span class="d-inline-block average-rating"
-                              ><span>4.2</span> (15)</span
-                            >
-                          </div>
-                        </div>
-                        <div class="cart-remove">
-                          <a href="javascript:;" class="btn btn-primary"
-                            >Remove</a
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-12 col-md-12 d-flex">
-                    <div
-                      class="course-box course-design list-course d-flex mb-0"
-                    >
-                      <div class="product">
-                        <div class="product-img">
-                          <router-link to="/course/course-details">
-                            <img
-                              class="img-fluid"
-                              alt=""
-                              src="@/assets/img/course/course-12.jpg"
-                            />
-                          </router-link>
-                          <div class="price">
-                            <h3>$300 <span>$99.00</span></h3>
-                          </div>
-                        </div>
-                        <div class="product-content">
-                          <div class="head-course-title">
-                            <h3 class="title">
-                              <router-link to="/course/course-details"
-                                >Sketch from A to Z (2023): Become an app
-                                designer</router-link
-                              >
-                            </h3>
-                          </div>
-                          <div
-                            class="course-info d-flex align-items-center border-bottom-0 pb-0"
-                          >
-                            <div class="rating-img d-flex align-items-center">
-                              <img src="@/assets/img/icon/icon-01.svg" alt="" />
-                              <p>12+ Lesson</p>
-                            </div>
-                            <div class="course-view d-flex align-items-center">
-                              <img src="@/assets/img/icon/icon-02.svg" alt="" />
-                              <p>9hr 30min</p>
-                            </div>
-                          </div>
-                          <div class="rating">
-                            <i class="fas fa-star filled me-1"></i>
-                            <i class="fas fa-star filled me-1"></i>
-                            <i class="fas fa-star filled me-1"></i>
-                            <i class="fas fa-star filled me-1"></i>
-                            <i class="fas fa-star me-1"></i>
-                            <span class="d-inline-block average-rating"
-                              ><span>4.0</span> (15)</span
-                            >
-                          </div>
-                        </div>
-                        <div class="cart-remove">
-                          <a href="javascript:;" class="btn btn-primary"
-                            >Remove</a
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <!-- Add your cart items here dynamically -->
               </div>
               <div class="cart-total">
                 <div class="row">
@@ -190,20 +22,46 @@
                       <p>Subtotal <span>$600.00</span></p>
                     </div>
                   </div>
-                  <div class="col-lg-6 col-md-6">
-                    <div class="check-outs">
-                      <router-link to="/pages/checkout" class="btn btn-primary"
-                        >Checkout</router-link
-                      >
+                  <div class="col-lg-12 col-md-12">
+                    <h4>Choose Payment Method:</h4>
+                    <div class="payment-methods">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="paymentMethod"
+                          id="paypal"
+                          value="paypal"
+                          v-model="paymentMethod"
+                        />
+                        <label class="form-check-label" for="paypal">
+                          Paypal
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="paymentMethod"
+                          id="vnpay"
+                          value="vnpay"
+                          v-model="paymentMethod"
+                        />
+                        <label class="form-check-label" for="vnpay">
+                          Vnpay
+                        </label>
+                      </div>
                     </div>
                   </div>
-                  <div class="col-lg-6 col-md-6">
-                    <div class="condinue-shop">
-                      <router-link
-                        to="/course/course-list"
+                  <div class="col-lg-12 col-md-12">
+                    <div class="check-outs mt-3">
+                      <button
+                        @click="pay"
                         class="btn btn-primary"
-                        >Continue Shopping</router-link
+                        :disabled="!paymentMethod"
                       >
+                        Pay Now
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -218,3 +76,76 @@
 
   <layouts1></layouts1>
 </template>
+
+<script>
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+
+export default {
+  setup() {
+    const router = useRouter();
+
+    return {
+      router,
+    };
+  },
+  data() {
+    return {
+      paymentMethod: null,
+    };
+  },
+  methods: {
+  async pay() {
+    const amount = 60000; 
+    const courseId = 1; 
+    const userId = 1; 
+
+    try {
+      let paymentUrl;
+
+      if (this.paymentMethod === 'paypal') {
+        const response = await axios.post('http://localhost:8081/api/payments/paypal/pay', null, {
+          params: {
+            amount,
+            courseId,
+            userId,
+          },
+        });
+
+        console.log('Response from PayPal API:', response.data);
+
+        if (response.data && response.data.paymentUrl) {
+          paymentUrl = response.data.paymentUrl;
+          window.location.href = paymentUrl;
+          return; // Dừng thực thi sau khi chuyển hướng
+        }
+      } else if (this.paymentMethod === 'vnpay') {
+          const response = await axios.post(
+            'http://localhost:8081/api/payments/vnpay/pay',
+            null,
+            {
+              params: {
+                amount,
+                courseId,
+                userId,
+              },
+            }
+          );
+
+          console.log('Response from VNPay API:', response.data);
+
+          if (response.data && response.data.paymentUrl) {
+            window.location.href = response.data.paymentUrl;
+            return; 
+          }
+        }
+
+      console.error('No payment URL received'); 
+
+    } catch (error) {
+      console.error('Error during payment:', error);
+    }
+  },
+}
+};
+</script>

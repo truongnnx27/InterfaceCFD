@@ -1,751 +1,106 @@
 <template>
-  <student-header></student-header>
-
-  <div class="breadcrumb-bar">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12 col-12">
-          <div class="breadcrumb-list">
-            <nav aria-label="breadcrumb" class="page-breadcrumb">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                  <router-link to="/">Home</router-link>
-                </li>
-                <li class="breadcrumb-item">Pages</li>
-                <li class="breadcrumb-item">Students List</li>
-              </ol>
-            </nav>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Page Wrapper -->
+  <student-header></student-header> 
+  <div class="breadcrumb-bar"></div>
   <div class="page-content">
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
-          <!-- Filter -->
-          <div class="showing-list">
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="d-flex align-items-center">
-                  <div class="view-icons">
-                    <router-link to="students-grid" class="list-view"><i class="feather-grid"></i></router-link>
-                    <router-link to="/student/students-list" class="list-view active"><i class="feather-list"></i></router-link>
-                  </div>
-                  <div class="show-result">
-                    <h4>Showing 1-9 of 50 results</h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /Filter -->
-
+          <div class="showing-list"></div>
           <div class="row">
-            <!-- Instructor List -->
             <div class="col-lg-12">
               <div class="student-grid-blk">
-                <!-- Row alignment -->
-                <div class="row">
-                  <div class="col-md-6">
+                <div class="row" v-if="users.length > 0">
+                  <div class="col-md-6" v-for="user in users" :key="user.id">
                     <div class="student-list flex-fill">
                       <div class="student-img">
                         <router-link to="/student/student-profile">
-                          <img
-                            class="img-fluid"
-                            alt=""
-                            src="@/assets/img/students/student-01.jpg"
-                          />
+                          <img class="img-fluid" :alt="`${user.fullName} avatar`" :src="`/vue/image/${user.profilePicture}`" />
                         </router-link>
                       </div>
                       <div class="student-content">
                         <h5>
-                          <router-link to="/student/student-profile"
-                            >Charles Dickens</router-link
-                          >
+                          <router-link to="/student/student-profile">
+                            {{ user.fullName }}
+                          </router-link>
                         </h5>
-                        <h6>Student</h6>
-                        <div class="student-info">
+                        <h6>{{ getRoleLabel(user.roleId) }}</h6> <div class="student-info">
                           <div class="loc-blk d-flex justify-content-center">
-                            <img
-                              src="@/assets/img/students/loc-icon.svg"
-                              class="me-1"
-                              alt=""
-                            />
-                            <p>Brazil</p>
-                          </div>
-                          <ul
-                            class="list-unstyled inline-inline profile-info-social"
-                          >
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-facebook me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-twitter me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-instagram me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-linkedin"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="student-list flex-fill">
-                      <div class="student-img">
-                        <router-link to="/student/student-profile">
-                          <img
-                            class="img-fluid"
-                            alt=""
-                            src="@/assets/img/students/student-02.jpg"
-                          />
-                        </router-link>
-                      </div>
-                      <div class="student-content">
-                        <h5>
-                          <router-link to="/student/student-profile"
-                            >Gabriel Palmer</router-link
-                          >
-                        </h5>
-                        <h6>Student</h6>
-                        <div class="student-info">
-                          <div class="loc-blk d-flex justify-content-center">
-                            <img
-                              src="@/assets/img/students/loc-icon.svg"
-                              class="me-1"
-                              alt=""
-                            />
-                            <p>Italy</p>
-                          </div>
-                          <ul
-                            class="list-unstyled inline-inline profile-info-social"
-                          >
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-facebook me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-twitter me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-instagram me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-linkedin"></i>
-                              </a>
-                            </li>
-                          </ul>
+                            </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <!-- /Row alignment -->
-
-                <!-- Row alignment -->
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="student-list flex-fill">
-                      <div class="student-img">
-                        <router-link to="/student/student-profile">
-                          <img
-                            class="img-fluid"
-                            alt=""
-                            src="@/assets/img/students/student-03.jpg"
-                          />
-                        </router-link>
-                      </div>
-                      <div class="student-content">
-                        <h5>
-                          <router-link to="/student/student-profile"
-                            >James Lemire</router-link
-                          >
-                        </h5>
-                        <h6>Student</h6>
-                        <div class="student-info">
-                          <div class="loc-blk d-flex justify-content-center">
-                            <img
-                              src="@/assets/img/students/loc-icon.svg"
-                              class="me-1"
-                              alt=""
-                            />
-                            <p>Louisiana</p>
-                          </div>
-                          <ul
-                            class="list-unstyled inline-inline profile-info-social"
-                          >
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-facebook me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-twitter me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-instagram me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-linkedin"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="student-list flex-fill">
-                      <div class="student-img">
-                        <router-link to="/student/student-profile">
-                          <img
-                            class="img-fluid"
-                            alt=""
-                            src="@/assets/img/students/student-04.jpg"
-                          />
-                        </router-link>
-                      </div>
-                      <div class="student-content">
-                        <h5>
-                          <router-link to="/student/student-profile"
-                            >Olivia Murphy</router-link
-                          >
-                        </h5>
-                        <h6>Student</h6>
-                        <div class="student-info">
-                          <div class="loc-blk d-flex justify-content-center">
-                            <img
-                              src="@/assets/img/students/loc-icon.svg"
-                              class="me-1"
-                              alt=""
-                            />
-                            <p>France</p>
-                          </div>
-                          <ul
-                            class="list-unstyled inline-inline profile-info-social"
-                          >
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-facebook me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-twitter me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-instagram me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-linkedin"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- /Row alignment -->
-
-                <!-- Row alignment -->
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="student-list flex-fill">
-                      <div class="student-img">
-                        <router-link to="/student/student-profile">
-                          <img
-                            class="img-fluid"
-                            alt=""
-                            src="@/assets/img/students/student-05.jpg"
-                          />
-                        </router-link>
-                      </div>
-                      <div class="student-content">
-                        <h5>
-                          <router-link to="/student/student-profile"
-                            >Rebecca Swartz</router-link
-                          >
-                        </h5>
-                        <h6>Student</h6>
-                        <div class="student-info">
-                          <div class="loc-blk d-flex justify-content-center">
-                            <img
-                              src="@/assets/img/students/loc-icon.svg"
-                              class="me-1"
-                              alt=""
-                            />
-                            <p>Iceland</p>
-                          </div>
-                          <ul
-                            class="list-unstyled inline-inline profile-info-social"
-                          >
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-facebook me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-twitter me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-instagram me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-linkedin"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="student-list flex-fill">
-                      <div class="student-img">
-                        <router-link to="/student/student-profile">
-                          <img
-                            class="img-fluid"
-                            alt=""
-                            src="@/assets/img/students/student-06.jpg"
-                          />
-                        </router-link>
-                      </div>
-                      <div class="student-content">
-                        <h5>
-                          <router-link to="/student/student-profile"
-                            >Betty Richards</router-link
-                          >
-                        </h5>
-                        <h6>Student</h6>
-                        <div class="student-info">
-                          <div class="loc-blk d-flex justify-content-center">
-                            <img
-                              src="@/assets/img/students/loc-icon.svg"
-                              class="me-1"
-                              alt=""
-                            />
-                            <p>Louisiana</p>
-                          </div>
-                          <ul
-                            class="list-unstyled inline-inline profile-info-social"
-                          >
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-facebook me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-twitter me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-instagram me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-linkedin"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- /Row alignment -->
-
-                <!-- Row alignment -->
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="student-list flex-fill">
-                      <div class="student-img">
-                        <router-link to="/student/student-profile">
-                          <img
-                            class="img-fluid"
-                            alt=""
-                            src="@/assets/img/students/student-07.jpg"
-                          />
-                        </router-link>
-                      </div>
-                      <div class="student-content">
-                        <h5>
-                          <router-link to="/student/student-profile"
-                            >Jeffrey Montgomery</router-link
-                          >
-                        </h5>
-                        <h6>Student</h6>
-                        <div class="student-info">
-                          <div class="loc-blk d-flex justify-content-center">
-                            <img
-                              src="@/assets/img/students/loc-icon.svg"
-                              class="me-1"
-                              alt=""
-                            />
-                            <p>Brazil</p>
-                          </div>
-                          <ul
-                            class="list-unstyled inline-inline profile-info-social"
-                          >
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-facebook me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-twitter me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-instagram me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-linkedin"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="student-list flex-fill">
-                      <div class="student-img">
-                        <router-link to="/student/student-profile">
-                          <img
-                            class="img-fluid"
-                            alt=""
-                            src="@/assets/img/students/student-08.jpg"
-                          />
-                        </router-link>
-                      </div>
-                      <div class="student-content">
-                        <h5>
-                          <router-link to="/student/student-profile"
-                            >Brooke Hayes</router-link
-                          >
-                        </h5>
-                        <h6>Student</h6>
-                        <div class="student-info">
-                          <div class="loc-blk d-flex justify-content-center">
-                            <img
-                              src="@/assets/img/students/loc-icon.svg"
-                              class="me-1"
-                              alt=""
-                            />
-                            <p>United States</p>
-                          </div>
-                          <ul
-                            class="list-unstyled inline-inline profile-info-social"
-                          >
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-facebook me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-twitter me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-instagram me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-linkedin"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- /Row alignment -->
-
-                <!-- Row alignment -->
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="student-list flex-fill">
-                      <div class="student-img">
-                        <router-link to="/student/student-profile">
-                          <img
-                            class="img-fluid"
-                            alt=""
-                            src="@/assets/img/students/student-09.jpg"
-                          />
-                        </router-link>
-                      </div>
-                      <div class="student-content">
-                        <h5>
-                          <router-link to="/student/student-profile"
-                            >Gertrude Shorter</router-link
-                          >
-                        </h5>
-                        <h6>Student</h6>
-                        <div class="student-info">
-                          <div class="loc-blk d-flex justify-content-center">
-                            <img
-                              src="@/assets/img/students/loc-icon.svg"
-                              class="me-1"
-                              alt=""
-                            />
-                            <p>Louisiana</p>
-                          </div>
-                          <ul
-                            class="list-unstyled inline-inline profile-info-social"
-                          >
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-facebook me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-twitter me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-instagram me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-linkedin"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="student-list flex-fill">
-                      <div class="student-img">
-                        <router-link to="/student/student-profile">
-                          <img
-                            class="img-fluid"
-                            alt=""
-                            src="@/assets/img/students/student-10.jpg"
-                          />
-                        </router-link>
-                      </div>
-                      <div class="student-content">
-                        <h5>
-                          <router-link to="/student/student-profile"
-                            >David Garza</router-link
-                          >
-                        </h5>
-                        <h6>Student</h6>
-                        <div class="student-info">
-                          <div class="loc-blk d-flex justify-content-center">
-                            <img
-                              src="@/assets/img/students/loc-icon.svg"
-                              class="me-1"
-                              alt=""
-                            />
-                            <p>Tunisia</p>
-                          </div>
-                          <ul
-                            class="list-unstyled inline-inline profile-info-social"
-                          >
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-facebook me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-twitter me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-instagram me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-linkedin"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- /Row alignment -->
-
-                <!-- Row alignment -->
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="student-list flex-fill">
-                      <div class="student-img">
-                        <router-link to="/student/student-profile">
-                          <img
-                            class="img-fluid"
-                            alt=""
-                            src="@/assets/img/students/student-11.jpg"
-                          />
-                        </router-link>
-                      </div>
-                      <div class="student-content">
-                        <h5>
-                          <router-link to="/student/student-profile"
-                            >Vivian Winders</router-link
-                          >
-                        </h5>
-                        <h6>Student</h6>
-                        <div class="student-info">
-                          <div class="loc-blk d-flex justify-content-center">
-                            <img
-                              src="@/assets/img/students/loc-icon.svg"
-                              class="me-1"
-                              alt=""
-                            />
-                            <p>Louisiana</p>
-                          </div>
-                          <ul
-                            class="list-unstyled inline-inline profile-info-social"
-                          >
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-facebook me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-twitter me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-instagram me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-linkedin"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="student-list flex-fill">
-                      <div class="student-img">
-                        <router-link to="/student/student-profile">
-                          <img
-                            class="img-fluid"
-                            alt=""
-                            src="@/assets/img/students/student-12.jpg"
-                          />
-                        </router-link>
-                      </div>
-                      <div class="student-content">
-                        <h5>
-                          <router-link to="/student/student-profile"
-                            >Sean Leon</router-link
-                          >
-                        </h5>
-                        <h6>Student</h6>
-                        <div class="student-info">
-                          <div class="loc-blk d-flex justify-content-center">
-                            <img
-                              src="@/assets/img/students/loc-icon.svg"
-                              class="me-1"
-                              alt=""
-                            />
-                            <p>Spain</p>
-                          </div>
-                          <ul
-                            class="list-unstyled inline-inline profile-info-social"
-                          >
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-facebook me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-twitter me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-instagram me-1"></i>
-                              </a>
-                            </li>
-                            <li class="list-inline-item">
-                              <a href="javascript:;">
-                                <i class="fa-brands fa-linkedin"></i>
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- /Row alignment -->
+                <p v-else>Loading users...</p>
+                <!-- <pagination></pagination> -->
               </div>
             </div>
-            <!-- /Instructor List -->
           </div>
-
-          <pagination></pagination>
         </div>
       </div>
     </div>
   </div>
-  <!-- /Page Wrapper -->
   <layouts1></layouts1>
 </template>
+
+<script>
+import axios from 'axios';
+import StudentHeader from '@/views/layouts/student-header.vue'; 
+
+export default {
+  components: {
+    StudentHeader,
+  },
+  data() {
+    return {
+      users: [],
+    };
+  },
+  mounted() {
+    this.fetchUsers();
+  },
+  methods: {
+    async fetchUsers() {
+      try {
+        const response = await axios.get('http://localhost:8081/api/users');
+        this.users = response.data;
+        console.log('Dữ liệu người dùng:', this.users);
+      } catch (error) {
+        console.error('Lỗi khi gọi API:', error);
+      }
+    },
+    getRoleLabel(roleId) {
+      switch (roleId) {
+        case 1:
+          return 'Admin';
+        case 2:
+          return 'User';
+        case 3:
+          return 'Teacher';
+        default:
+          return 'Unknown';
+      }
+    }
+  },
+}; 
+</script>
+<style scoped>
+.student-avatar {
+  max-width: 150px; /* Đặt chiều rộng tối đa cho ảnh */
+  max-height: 150px; /* Đặt chiều cao tối đa cho ảnh */
+  width: 100%; /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của khung cha */
+  height: auto; /* Đảm bảo ảnh giữ tỉ lệ khi thay đổi kích thước */
+  object-fit: cover; /* Cắt ảnh để vừa khung mà không bị méo */
+  border-radius: 50%; /* Tùy chọn: bo góc cho ảnh thành hình tròn */
+}
+
+.student-img {
+  width: 150px; /* Chiều rộng cố định cho khung */
+  height: 150px; /* Chiều cao cố định cho khung */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Cắt bỏ phần ảnh vượt ra ngoài khung */
+}
+
+</style>

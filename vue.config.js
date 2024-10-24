@@ -12,6 +12,7 @@ module.exports = defineConfig({
   chainWebpack: (config) => {
     config.resolve.alias
       .set('swiper$', 'swiper/js/swiper.js')
+      .set('@', path.resolve(__dirname, 'src'))  // Thêm alias cho thư mục src
       .end();
   },
   configureWebpack: {
@@ -21,11 +22,10 @@ module.exports = defineConfig({
           test: /\.ico$/,
           loader: 'file-loader',
           options: {
-            name: '[name].[ext]'
-          }
+            name: '[name].[ext]',
+          },
         },
-       
-      ]
-    }
+      ],
+    },
   },
 });

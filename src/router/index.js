@@ -94,9 +94,14 @@ import Registerstepthree from '@/views/pages/pages/register-step-three.vue'
 import Registersteptwo from '@/views/pages/pages/register-step-two.vue'
 import Register from '@/views/pages/pages/register-index.vue'
 import Home from '@/views/pages/home/home-index.vue'
-
+import PaymentSuccess from '@/views/pages/pages/payment-success.vue';
 
 const routes = [
+  {
+    path: '/payment-success',
+    name: 'PaymentSuccess',
+    component: PaymentSuccess,
+  },
   {
     path: "/student",
     component: Student_Index,
@@ -124,6 +129,7 @@ const routes = [
       { path: "setting-student-subscription", component: Setting_Student_Subscription },
     ],
   },
+
   {
     path: "/instructor",
     component: Instructor_Index,
