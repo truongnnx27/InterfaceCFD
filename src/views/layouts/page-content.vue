@@ -31,6 +31,7 @@
       <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
         <img src="@/assets/img/icon/cart.svg" alt="img" />
       </a>
+<!--Cart-->
       <div class="wishes-list dropdown-menu dropdown-menu-right">
         <div class="wish-header">
           <a href="javascript:void(0)">View Cart</a>
@@ -61,6 +62,7 @@
                 </div>
               </div>
             </li>
+            <!--
             <li>
               <div class="media">
                 <div class="d-flex media-wide">
@@ -107,6 +109,7 @@
                 </div>
               </div>
             </li>
+            -->
           </ul>
           <div class="total-item">
             <h6>Subtotal : $ 600</h6>
@@ -114,6 +117,7 @@
           </div>
         </div>
       </div>
+ <!--End cart-->
     </li>
     <li class="nav-item wish-nav">
       <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">

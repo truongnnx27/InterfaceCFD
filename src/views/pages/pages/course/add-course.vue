@@ -277,7 +277,7 @@
                                 </template>
                               </div>
 
-                              <!-- Quiz Input -->
+        <!-- Quiz Input -->
                               <div v-if="lecture.showQuizInput" class="quiz-input" style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
                                 <div class="row mb-3" style="display: flex; align-items: center; margin-bottom: 15px;">
                                   <label style="flex: 0 0 20%; font-weight: bold;">Title Quiz</label>
@@ -297,7 +297,7 @@
                                   </button>
                                 </div>
 
-                                <!-- Hiển thị các câu hỏi -->
+        <!-- Hiển thị các câu hỏi -->
                                 <div v-for="(question, index) in lecture.quiz.questions" :key="question.title" style="margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 4px; background-color: white;">
                                   <h5 style="font-weight: bold; color: #333;">{{ question.title }}</h5>
 
@@ -320,13 +320,13 @@
                                 </div>
                               </div>
 
-                              <!-- Video Input -->
+        <!-- Video Input -->
                               <div v-if="lecture.showVideoInput" class="input-group" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center;">
                                 <i class="fas fa-video" style="margin-right: 10px;"></i>
                                 <input type="file" class="form-control form-control-sm" @change="uploadVideo($event, lecture)" style="flex: 1;" />
                               </div>
 
-                              <!-- Assignment Input -->
+        <!-- Assignment Input -->
                               <div v-if="lecture.showAssignmentInput" class="input-group" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center;">
                                 <i class="fas fa-tasks" style="margin-right: 10px;"></i>
                                 <input type="text" class="form-control form-control-sm" placeholder="Enter assignment details" style="flex: 1;" />
