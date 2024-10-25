@@ -3,7 +3,7 @@
   <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Enter Lecture Name</h5>
+          <h5 class="modal-title">Enter Section Name</h5>
           <button type="button" class="btn-close" @click="closePopup"></button>
         </div>
         <div class="modal-body">

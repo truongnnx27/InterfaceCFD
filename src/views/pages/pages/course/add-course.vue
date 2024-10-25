@@ -221,17 +221,15 @@
                                 <div style="margin: 5px;">
                                   <!-- quiz -->
                                   <template v-if="!lecture.quiz || !lecture.quiz.title">
-                                    <a href="javascript:void(0);" class="btn-icon" @click="addQuiz(lecture)" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center;">
+                                    <a href="javascript:void(0);" class="btn-icon" v-if="!lecture.showVideoInput && !lecture.showAssignmentInput" @click="addQuiz(lecture)" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center;">
                                       <i class="fas fa-question-circle" style="font-size: 24px; margin-right: 5px;"></i>
                                       <span>Quiz</span>
                                     </a>
                                   </template>
 
-                                  <!-- Nếu quiz đã có tiêu đề thì hiển thị tiêu đề kèm nút chỉnh sửa -->
                                   <template v-else>
                                     <div style="display: flex; align-items: center;">
                                       <span style="margin-right: 10px;">Quiz: {{ lecture.quiz.title }}</span>
-                                      <!-- Nút chỉnh sửa quiz để cập nhật tiêu đề -->
                                       <a href="javascript:void(0);" class="btn-icon" @click="addQuiz(lecture)" style="border: 1px solid #ccc; padding: 5px;">
                                         <i class="fas fa-edit" style="font-size: 20px;"></i>
                                       </a>
@@ -239,15 +237,19 @@
                                   </template>
                                 </div>
 
+                                <!-- Nút Video -->
                                 <template v-if="!lecture.quiz || !lecture.quiz.title">
-                                  <!-- Nút Video -->
-                                  <a href="javascript:void(0);" class="btn-icon" v-if="!lecture.showVideoInput && !lecture.showQuizInput && !lecture.showAssignmentInput" @click="addVideo(lecture)" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center; margin: 5px;">
-                                    <i class="fas fa-video" style="font-size: 24px; margin-right: 5px;"></i> <span>Video</span>
+                                  <a href="javascript:void(0);" class="btn-icon" v-if="!lecture.showQuizInput && !lecture.showAssignmentInput" @click="addVideo(lecture)" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center; margin: 5px;">
+                                    <i class="fas fa-video" style="font-size: 24px; margin-right: 5px;"></i>
+                                    <span>Video</span>
                                   </a>
+                                </template>
 
-                                  <!-- Nút Assignment -->
-                                  <a href="javascript:void(0);" class="btn-icon" v-if="!lecture.showAssignmentInput && !lecture.showQuizInput && !lecture.showVideoInput" @click="addAssignment(lecture)" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center; margin: 5px;">
-                                    <i class="fas fa-tasks" style="font-size: 24px; margin-right: 5px;"></i> <span>Assignment</span>
+                                <!-- Nút Assignment -->
+                                <template v-if="!lecture.quiz || !lecture.quiz.title">
+                                  <a href="javascript:void(0);" class="btn-icon" v-if="!lecture.showQuizInput && !lecture.showVideoInput" @click="addAssignment(lecture)" style="border: 1px solid #ccc; padding: 10px; display: flex; align-items: center; justify-content: center; margin: 5px;">
+                                    <i class="fas fa-tasks" style="font-size: 24px; margin-right: 5px;"></i>
+                                    <span>Assignment</span>
                                   </a>
                                 </template>
                               </div>
@@ -289,7 +291,7 @@
                                   </button>
 
                                   <div v-for="option in question.options" :key="option.text" style="display: flex; align-items: center; margin-bottom: 5px;">
-                                    <input type="checkbox" v-model="option.isCorrect" style="margin-right: 10px;" />
+                                    <input type="checkbox" disabled v-model="option.correct" style="margin-right: 10px;" />
                                     <span>{{ option.text }}</span>
                                   </div>
                                 </div>
@@ -341,7 +343,6 @@
   <layouts1></layouts1>
 </template>
 <script>
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import LecturePopup from "@/components/LecturePopup.vue";
 import SectionPopup from "@/components/SectionPopup.vue";
 import axios from "axios";
@@ -353,15 +354,10 @@ export default {
   },
   data() {
     return {
-      editor: ClassicEditor,
-      editorData: "Description",
-      editorConfig: {},
-      tags: ["jquery", "bootstrap"],
       Category: ["Category 01", "Category 02", "Category 03", "Category 04"],
       Level: ["Level 01", "Level 02", "Level 03", "Level 04"],
       currentStep: 1,
       totalSteps: 5,
-      content: "Description",
       sections: [],
       showSectionPopup: false,
       showLecturePopup: false,
@@ -375,8 +371,9 @@ export default {
         coverImage: null,
         price: "",
         published: false,
-        instructor: 1,
-        sections: []
+        instructor: "39bc1dd6-c570-4008-95cb-af55a276ad04",
+        sections: [],
+        createdAt: new Date(),
       }
     };
   },
@@ -509,8 +506,8 @@ export default {
             title: "Select question type:",
             input: "radio",
             inputOptions: {
-              one: '4 option',
-              multiple: 'Many option'
+              one: '4 option (one correct answer)',
+              multiple: 'Many options (multiple correct answers)'
             },
             inputValidator: (value) => {
               if (!value) {
@@ -524,32 +521,53 @@ export default {
                 type: typeResult.value,
                 options: []
               };
-              // Function to generate HTML for options
-              const generateOptionsHTML = (numOptions) => {
+
+              // Function to generate HTML for options with checkboxes for 'correct'
+              const generateOptionsHTML = (numOptions, allowMultipleCorrect) => {
                 return `
                   <div style="display: flex; flex-direction: column; gap: 10px;">
                     ${Array.from({ length: numOptions }, (_, i) => `
                       <div style="display: flex; align-items: center; gap: 10px;">
-                        <label for="option${i + 1}" style="flex: 1; font-weight: bold">Option ${i + 1}:</label>
+                        <label for="option${i + 1}" style="flex: 1; font-weight: bold; font-size: 15px"> ${i + 1}:</label>
                         <input type="text" id="option${i + 1}" class="swal2-input" style="flex: 3;" placeholder="Option ${i + 1}">
+                        <label style="flex: 1; font-weight: bold">
+                          <input type="checkbox" id="correct${i + 1}" ${allowMultipleCorrect ? '' : 'class="single-correct"'}>
+                        </label>
                       </div>
                     `).join('')}
                   </div>
                 `;
               };
-              const saveQuestion = (numOptions) => {
+
+              const saveQuestion = (numOptions, allowMultipleCorrect) => {
                 Swal.fire({
                   title: 'Edit options',
-                  html: generateOptionsHTML(numOptions),
+                  html: generateOptionsHTML(numOptions, allowMultipleCorrect),
                   focusConfirm: false,
                   confirmButtonText: 'Save question',
                   showCancelButton: true,
                   cancelButtonText: 'Cancel',
+                  didOpen: () => {
+                    if (!allowMultipleCorrect) {
+                      // Add event listener to enforce single correct answer if type is 'one'
+                      const checkboxes = document.querySelectorAll('.single-correct');
+                      checkboxes.forEach((checkbox, i) => {
+                        checkbox.addEventListener('change', function() {
+                          if (this.checked) {
+                            checkboxes.forEach((box, j) => {
+                              if (i !== j) box.checked = false; // Deselect other checkboxes
+                            });
+                          }
+                        });
+                      });
+                    }
+                  },
                   preConfirm: () => {
                     let isValid = true;
                     let options = [];
                     for (let i = 1; i <= numOptions; i++) {
                       let optionText = document.getElementById(`option${i}`).value.trim();
+                      let correct = document.getElementById(`correct${i}`).checked;
 
                       // Validate if the option is empty
                       if (!optionText) {
@@ -559,7 +577,7 @@ export default {
                       }
                       options.push({
                         text: optionText,
-                        isCorrect: false
+                        correct: correct // Capture the checkbox state
                       });
                     }
                     if (isValid) {
@@ -571,8 +589,9 @@ export default {
                   }
                 });
               };
+
               if (typeResult.value === 'one') {
-                saveQuestion(4); // Default to 4 options for "one correct answer" type
+                saveQuestion(4, false); // Default to 4 options, with only one correct allowed
               } else {
                 // Input the number of options for "many correct answers" type
                 Swal.fire({
@@ -583,14 +602,13 @@ export default {
                     if (!value || value <= 0) {
                       return "You need to enter a valid number of options!";
                     }
-                    else if(value>10)
-                    {
-                      return "Option must be less than 10"
+                    else if(value > 10) {
+                      return "Option must be less than 10";
                     }
                   }
                 }).then((numberResult) => {
                   if (numberResult.isConfirmed) {
-                    saveQuestion(parseInt(numberResult.value));
+                    saveQuestion(parseInt(numberResult.value), true); // Allow multiple correct options
                   }
                 });
               }
@@ -599,6 +617,7 @@ export default {
         }
       });
     },
+
     editQuestionTitle(question) {
       // Kiểm tra xem question có undefined không
       if (!question) {
@@ -639,12 +658,16 @@ export default {
         <div style="display: flex; flex-direction: column; gap: 10px;">
           ${question.options.map((option, index) => `
             <div style="display: flex; align-items: center; gap: 10px;">
-              <label for="option${index + 1}" style="flex: 1; font-weight: bold">Option ${index + 1}:</label>
-              <input type="text" id="option${index + 1}" class="swal2-input" style="flex: 3;" placeholder="${option.text}">
+              <label for="option${index + 1}" style="flex: 1; font-weight: bold;font-size: 15px"> ${index + 1}:</label>
+              <input type="text" id="option${index + 1}" class="swal2-input" style="flex: 3;" value="${option.text}">
+              <label style="flex: 1; font-weight: bold">
+                <input type="checkbox" id="correct${index + 1}" ${option.correct ? 'checked' : ''} ${question.type === 'one' ? 'class="single-correct"' : ''}>
+              </label>
             </div>
           `).join('')}
         </div>
       `;
+
       Swal.fire({
         title: 'Edit options',
         html: htmlOptions,
@@ -652,11 +675,36 @@ export default {
         confirmButtonText: 'Save changes',
         showCancelButton: true,
         cancelButtonText: 'Cancel',
+        didOpen: () => {
+          if (question.type === 'one') {
+            // Nếu câu hỏi chỉ có một đáp án đúng, thì thêm chức năng chỉ cho phép chọn một checkbox
+            const checkboxes = document.querySelectorAll('.single-correct');
+            checkboxes.forEach((checkbox, i) => {
+              checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                  checkboxes.forEach((box, j) => {
+                    if (i !== j) box.checked = false; // Bỏ chọn các checkbox khác
+                  });
+                }
+              });
+            });
+          }
+        },
         preConfirm: () => {
-          // Cập nhật lại nội dung của từng tùy chọn
+          let isValid = true;
+
           question.options.forEach((option, index) => {
-            option.text = document.getElementById(`option${index + 1}`).value;
+            let optionText = document.getElementById(`option${index + 1}`).value.trim();
+            if (!optionText) {
+              isValid = false;
+              Swal.showValidationMessage(`Option ${index + 1} cannot be empty!`);
+            } else {
+              option.text = optionText;
+              option.correct = document.getElementById(`correct${index + 1}`).checked;
+            }
           });
+
+          return isValid; // Chỉ trả về true nếu không có ô trống
         }
       });
     },
@@ -689,6 +737,8 @@ export default {
     },
     saveCourse() {
       console.log("saveCourse called");
+
+      // Trích xuất tất cả các tệp video từ các phần và bài giảng
       const files = this.sections.flatMap(section => section.lectures.flatMap(lecture => lecture.videos ? lecture.videos : [])).filter(video => video);
       console.log("Files extracted:", files);
 
@@ -713,18 +763,27 @@ export default {
         console.error("Required part 'files' is not present.");
       }
 
+      // Chuẩn bị thông tin khóa học, loại bỏ các thuộc tính không cần thiết
       this.courseInfo.sections = this.sections.map(section => ({
         ...section,
         // eslint-disable-next-line no-unused-vars
         lectures: section.lectures.map(({ showAssignmentInput, showQuizInput, showVideoInput, quiz, ...rest }) => ({
           ...rest,
-          quiz: quiz ? { ...quiz } : null // Include quiz if it exists
+          quiz: quiz ? {
+            ...quiz,
+            questions: quiz.questions.map(question => ({
+              ...question,
+              // Đảm bảo rằng trường isCorrect được bao gồm
+              correct: question.correct || false // Thiết lập mặc định nếu không có
+            }))
+          } : null // Bao gồm quiz nếu nó tồn tại
         }))
       }));
 
       console.log("Course info prepared:", this.courseInfo);
 
-      axios.post("http://localhost:8080/api/v1/courses", this.courseInfo, {
+      // Gửi thông tin khóa học đến máy chủ
+      axios.post("http://localhost:8080/identity/api/v1/courses", this.courseInfo, {
         headers: {
           "Content-Type": "application/json"
         }
@@ -732,12 +791,14 @@ export default {
           .then(response => {
             console.log("Metadata saved:", response.data, response.status);
 
+            // Chuẩn bị dữ liệu biểu mẫu để tải lên tệp
             const formData = new FormData();
             files.forEach(file => {
               formData.append("files", file);
             });
 
-            axios.post("http://localhost:8080/api/s3/upload", formData, {
+            // Tải tệp lên máy chủ
+            axios.post("http://localhost:8080/identity/api/s3/upload", formData, {
               headers: {
                 "Content-Type": "multipart/form-data"
               }
@@ -764,6 +825,7 @@ export default {
             console.error("Error config:", error.config);
           });
 
+      // Chuyển đến bước cuối cùng
       this.currentStep = 4;
       console.log("Current step set to 4");
     },
@@ -772,16 +834,19 @@ export default {
     },
     handleFileVideo(index, lectureIndex, event) {
       const files = [];
+      // Kiểm tra sự kiện và số lượng tệp được chọn
       if (event && event.target.files.length > 0) {
+        // Lặp qua các tệp được chọn
         for (let i = 0; i < event.target.files.length; i++) {
           const file = event.target.files[i];
           if (file) {
-            files.push(file);
+            files.push(file); // Thêm tệp vào mảng files
           }
         }
       }
+      // Gán các tệp video đã chọn cho bài giảng tương ứng
       this.sections[index].lectures[lectureIndex].videos = files;
-      console.log(files);
+      console.log(files); // In ra mảng files để kiểm tra
     }
   }
 };

@@ -16,46 +16,43 @@
             <h1>Sign into Your Account</h1>
             <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ errors }">
               <div class="input-block">
-                <label class="form-control-label">Email</label>
+                <label class="form-control-label">Username</label>
                 <div class="form-addons">
                   <Field
-                    name="email"
-                    type="text"
-                    value="example@dreamstechnologies.com"
-                    class="form-control"
-                    :class="{ 'is-invalid': errors.email }"
+                      name="username"
+                      type="text"
+                      v-model="form.username"
+                      class="form-control"
+                      :class="{ 'is-invalid': errors.username }"
                   />
-                  <div class="invalid-feedback">{{ errors.email }}</div>
-                  <div class="emailshow text-danger" id="email"></div>
+                  <div class="invalid-feedback">{{ errors.username }}</div>
                 </div>
               </div>
               <div class="input-block">
                 <label class="form-control-label">Password</label>
                 <div class="pass-group">
                   <Field
-                    name="password"
-                    :type="showPassword ? 'text' : 'password'"
-                    value="123456"
-                    class="form-control pass-input mt-2"
-                    :class="{ 'is-invalid': errors.password }"
+                      name="password"
+                      :type="showPassword ? 'text' : 'password'"
+                      v-model="form.password"
+                      class="form-control pass-input mt-2"
+                      :class="{ 'is-invalid': errors.password }"
                   />
-                  <span @click="toggleShow" class="toggle-password"
-                  :class="{
+                  <span
+                      @click="toggleShow"
+                      class="toggle-password"
+                      :class="{
                       'feather-eye': showPassword,
                       'feather-eye-off': !showPassword,
                     }"
-                  >
-                  </span>
+                  ></span>
                   <div class="invalid-feedback">{{ errors.password }}</div>
-                  <div class="emailshow text-danger" id="password"></div>
                 </div>
               </div>
               <div class="forgot">
-                <span
-                  ><a class="forgot-link" href="forgot-password"
-                    >Forgot Password ?</a
-                  ></span
-                >
+                <span>
+                  <a class="forgot-link" href="forgot-password">Forgot Password ?</a>
+                </span>
               </div>
               <div class="remember-me">
                 <label class="custom_check mr-2 mb-0 d-inline-flex remember-me">
@@ -65,7 +62,7 @@
                 </label>
               </div>
               <div class="d-grid">
-                <router-link to="/home/" class="btn btn-primary btn-start"> Sign In </router-link>
+                <button type="submit" class="btn btn-primary btn-start">Sign In</button>
               </div>
             </Form>
           </div>
@@ -75,28 +72,27 @@
           <div class="sign-google">
             <ul>
               <li>
-                <a href="#"
-                  ><img
-                    src="@/assets/img/net-icon-01.png"
-                    class="img-fluid"
-                    alt="Logo"
+                <a href="#">
+                  <img
+                      src="@/assets/img/net-icon-01.png" class="img-fluid"
+                      alt="Logo"
                   />
-                  Sign In using Google</a
-                >
+                  Sign In using Google
+                </a>
               </li>
               <li>
-                <a href="#"
-                  ><img
-                    src="@/assets/img/net-icon-02.png"
-                    class="img-fluid"
-                    alt="Logo"
-                  />Sign In using Facebook</a
-                >
+                <a href="#">
+                  <img
+                      src="@/assets/img/net-icon-02.png"
+                      class="img-fluid"
+                      alt="Logo"
+                  />Sign In using Facebook
+                </a>
               </li>
             </ul>
           </div>
           <p class="mb-0">
-            New User ? <router-link to="register">Create an Account</router-link>
+            New User? <router-link to="register">Create an Account</router-link>
           </p>
         </div>
       </div>
@@ -107,71 +103,67 @@
 
 <script>
 import { ref } from "vue";
-import { router } from "@/router";
+import { useRouter } from "vue-router";
 import { Form, Field } from "vee-validate";
 import * as Yup from "yup";
+import axios from "axios";
+
 export default {
-  components: {
-    Form,
-    Field,
-  },
-  data() {
-    return {
-      showPassword: false,
-      password: null,
-      emailError: "",
-      passwordError: "",
-    };
-  },
-  computed: {
-    buttonLabel() {
-      return this.showPassword ? "Hide" : "Show";
-    },
-  },
-  methods: {
-    toggleShow() {
-      this.showPassword = !this.showPassword;
-    },
-  },
+  components: { Form, Field },
   setup() {
-    let users = localStorage.getItem("storedData");
-    if (users === null) {
-      let password = [
-        {
-          email: "example@dreamstechnologies.com",
-          password: "123456",
-        },
-      ];
-      const jsonData = JSON.stringify(password);
-      localStorage.setItem("storedData", jsonData);
-    }
-    const schema = Yup.object().shape({
-      email: Yup.string().required("Email is required").email("Email is invalid"),
-      password: Yup.string()
-        .min(6, "Password must be at least 6 characters")
-        .required("Password is required"),
+    const router = useRouter();
+    const form = ref({
+      username: "",
+      password: "",
     });
-    const onSubmit = (values) => {
-      document.getElementById("email").innerHTML = "";
-      document.getElementById("password").innerHTML = "";
-      let data = localStorage.getItem("storedData");
-      var Pdata = JSON.parse(data);
-      const Eresult = Pdata.find(({ email }) => email === values.email);
-      if (Eresult) {
-        if (Eresult.password === values.password) {
-          router.push("/home/");
-        } else {
-          document.getElementById("password").innerHTML = "Incorrect password";
-        }
-      } else {
-        document.getElementById("email").innerHTML = "Email is not valid";
-      }
+    const showPassword = ref(false);
+
+    const schema = Yup.object({
+      username: Yup.string().required("Username is required"),
+      password: Yup.string().required("Password is required"),
+    });
+
+    const toggleShow = () => {
+      showPassword.value = !showPassword.value;
     };
+
+    const onSubmit = async () => {
+      // try {
+      //   const response = await axios.post("http://localhost:8080/identity/authentication/token", form.value);
+      //   const token = response.data.result.token;
+      //
+      //   localStorage.setItem("token", token);
+      //
+      //   router.push("/dashboard");
+      // } catch (error) {
+      //   console.error("Error during authentication:", error);
+      // }
+
+      axios.post("http://localhost:8080/identity/authentication/token",form.value).then((response) => {
+
+        const token = response.data.result.token;
+
+        localStorage.setItem("token", token);
+
+        router.push("/home");
+      });
+
+      // axios.get("http://localhost:8080/identity/users").then((response) => {
+      //   console.log(response.data);
+      // });
+    };
+
     return {
+      form,
       schema,
+      showPassword,
+      toggleShow,
       onSubmit,
-      checked: ref(false),
     };
   },
 };
 </script>
+
+<style scoped>
+/* Add your custom styles here */
+</style>
