@@ -24,8 +24,10 @@ module.exports = defineConfig({
             name: '[name].[ext]'
           }
         },
-       
       ]
-    }
+    },
+    devServer:{
+      port: 8081
+    }    
   },
 });
