@@ -783,7 +783,7 @@ export default {
       console.log("Course info prepared:", this.courseInfo);
 
       // Gửi thông tin khóa học đến máy chủ
-      axios.post("http://localhost:8080/identity/api/v1/courses", this.courseInfo, {
+      axios.post("http://localhost:/api/v1/courses", this.courseInfo, {
         headers: {
           "Content-Type": "application/json"
         }
@@ -798,7 +798,7 @@ export default {
             });
 
             // Tải tệp lên máy chủ
-            axios.post("http://localhost:8080/identity/api/s3/upload", formData, {
+            axios.post("http://localhost:8080/api/s3/upload", formData, {
               headers: {
                 "Content-Type": "multipart/form-data"
               }
