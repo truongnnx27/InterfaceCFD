@@ -33,7 +33,7 @@
                 <i class="fas fa-times"></i>
               </a>
             </div>
-<!--            <main-nav></main-nav>-->
+            <main-nav></main-nav>
           </div>
 
           <sign-pages></sign-pages>

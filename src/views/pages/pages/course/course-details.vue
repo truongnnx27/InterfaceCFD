@@ -592,7 +592,7 @@
                     <div class="row gx-2">
                       <div class="col-md-6">
                         <router-link
-                          to="course-wishlist"
+                          to="/pages/wishlist"
                           class="btn btn-wish w-100"
                           ><i class="feather-heart"></i> Add to
                           Wishlist</router-link
@@ -605,7 +605,7 @@
                       </div>
                     </div>
                     <router-link
-                      to="/pages/checkout"
+                      to="/course/course-lesson"
                       class="btn btn-enroll w-100"
                       >Enroll Now</router-link
                     >

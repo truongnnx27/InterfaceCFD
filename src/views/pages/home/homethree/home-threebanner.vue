@@ -248,7 +248,7 @@ export default {
   },
   methods: {
     submitForm() {
-      this.$router.push("/course-list");
+      this.$router.push("/course/course-list");
     },
   },
   mounted() {

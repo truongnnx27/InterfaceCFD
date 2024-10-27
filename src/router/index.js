@@ -288,4 +288,6 @@ router.beforeEach((to, from, next) => {
 
   // Continue with the navigation
   next();
+
+  console.log(to, from);
 });

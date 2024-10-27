@@ -15,7 +15,7 @@
                   >
                 </li>
                 <li>
-                  <a href="javascript:void(0);" class="btn btn-success-dark" @click="saveCourse">Save</a>
+                  <button class="btn btn-success-dark" @click="saveCourse" :disabled="isSaving || currentStep === 4">Save</button>
                 </li>
               </ul>
             </div>
@@ -127,34 +127,16 @@
                         <div class="input-block">
                           <label class="add-course-label">Course cover image</label>
                           <div class="relative-form">
-                            <span>{{ courseInfo.coverImage ? courseInfo.coverImage.name : "No File Selected" }}</span>
                             <label class="relative-file-upload">
                               Upload File <input type="file" @change="handleFileUpload" />
                             </label>
                           </div>
                         </div>
                         <div class="input-block">
-                          <div class="add-image-box">
-                            <a href="javascript:void(0);">
-                              <i class="far fa-image"></i>
-                            </a>
+                          <div class="add-image-box" style="width: 100%; height: 400px; overflow: hidden;">
+                            <img :src="courseInfo.coverImage" style="width: 100%; height: 100%; aspect-ratio: 16 / 9; object-fit: cover;" />
                           </div>
                         </div>
-<!--                        <div class="input-block">-->
-<!--                          <input-->
-<!--                              type="text"-->
-<!--                              class="form-control"-->
-<!--                              placeholder="Video URL"-->
-<!--                              v-model="courseInfo.videoUrl"-->
-<!--                          />-->
-<!--                        </div>-->
-<!--                        <div class="input-block">-->
-<!--                          <div class="add-image-box add-video-box">-->
-<!--                            <a href="javascript:void(0);">-->
-<!--                              <i class="fas fa-circle-play"></i>-->
-<!--                            </a>-->
-<!--                          </div>-->
-<!--                        </div>-->
                       </form>
                     </div>
                     <div class="widget-btn">
@@ -347,6 +329,7 @@ import LecturePopup from "@/components/LecturePopup.vue";
 import SectionPopup from "@/components/SectionPopup.vue";
 import axios from "axios";
 import Swal from 'sweetalert2';
+import {router} from "@/router";
 export default {
   components: {
     LecturePopup,
@@ -371,10 +354,11 @@ export default {
         coverImage: null,
         price: "",
         published: false,
-        instructor: "39bc1dd6-c570-4008-95cb-af55a276ad04",
+        instructor: "734c971a-5a09-4847-957e-1ee0a847aa3a",
         sections: [],
         createdAt: new Date(),
-      }
+      },
+      isSaving: false, // Add this line
     };
   },
   methods: {
@@ -736,6 +720,7 @@ export default {
       }
     },
     saveCourse() {
+      this.isSaving = true; // Add this line
       console.log("saveCourse called");
 
       // Trích xuất tất cả các tệp video từ các phần và bài giảng
@@ -783,7 +768,7 @@ export default {
       console.log("Course info prepared:", this.courseInfo);
 
       // Gửi thông tin khóa học đến máy chủ
-      axios.post("http://localhost:8080/identity/api/v1/courses", this.courseInfo, {
+      axios.post("http://localhost:8080/api/v1/courses", this.courseInfo, {
         headers: {
           "Content-Type": "application/json"
         }
@@ -797,8 +782,9 @@ export default {
               formData.append("files", file);
             });
 
+            console.log("Form data prepared:", formData.get("files"));
             // Tải tệp lên máy chủ
-            axios.post("http://localhost:8080/identity/api/s3/upload", formData, {
+            axios.post("http://localhost:8080/api/s3/upload/video", formData, {
               headers: {
                 "Content-Type": "multipart/form-data"
               }
@@ -827,10 +813,31 @@ export default {
 
       // Chuyển đến bước cuối cùng
       this.currentStep = 4;
+      this.isSaving = false; // Re-enable the save button
       console.log("Current step set to 4");
+
+      // Set a timeout to revert back to step 1 after 10 seconds
+      setTimeout(() => {
+        router.push("/instructor/instructor-dashboard");
+      }, 5000);
     },
     handleFileUpload(event) {
-      this.courseInfo.coverImage = event.target.files[0].name;
+      const coverImage = event.target.files[0];
+        // Tải ảnh lên S3
+        const formData = new FormData();
+        formData.append("coverImage", coverImage);
+        axios.post("http://localhost:8080/api/s3/upload/image", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+            .then(response => {
+              console.log("Image uploaded:", response.data);
+              this.courseInfo.coverImage = response.data.urlCoverImage;
+            })
+            .catch(error => {
+              console.error("Error occurred while uploading file:", error);
+            });
     },
     handleFileVideo(index, lectureIndex, event) {
       const files = [];

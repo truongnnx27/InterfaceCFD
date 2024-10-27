@@ -34,7 +34,7 @@
                 <i class="fas fa-times"></i>
               </a>
             </div>
-<!--            <main-nav></main-nav>-->
+            <main-nav></main-nav>
           </div>
 
           <header-page1></header-page1>

@@ -33,7 +33,8 @@
       </a>
       <div class="wishes-list dropdown-menu dropdown-menu-right">
         <div class="wish-header">
-          <a href="javascript:void(0)">View Cart</a>
+<!--          <a href="javascript:void(0)">View Cart</a>-->
+          <router-link to="/pages/cart">View Cart</router-link>
           <a href="javascript:void(0)" class="float-end">Checkout</a>
         </div>
         <div class="wish-content">

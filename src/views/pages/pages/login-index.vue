@@ -139,7 +139,7 @@ export default {
       //   console.error("Error during authentication:", error);
       // }
 
-      axios.post("http://localhost:8080/identity/authentication/token",form.value).then((response) => {
+      axios.post("http://localhost:8080/authentication/token",form.value).then((response) => {
 
         const token = response.data.result.token;
 
