@@ -73,20 +73,14 @@
             <ul>
               <li>
                 <a href="#">
-                  <img
-                      src="@/assets/img/net-icon-01.png" class="img-fluid"
-                      alt="Logo"
-                  />
+                  <img src="@/assets/img/net-icon-01.png" class="img-fluid" alt="Logo" />
                   Sign In using Google
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <img
-                      src="@/assets/img/net-icon-02.png"
-                      class="img-fluid"
-                      alt="Logo"
-                  />Sign In using Facebook
+                  <img src="@/assets/img/net-icon-02.png" class="img-fluid" alt="Logo" />
+                  Sign In using Facebook
                 </a>
               </li>
             </ul>
@@ -96,13 +90,12 @@
           </p>
         </div>
       </div>
-      <!-- /Login -->
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { Form, Field } from "vee-validate";
 import * as Yup from "yup";
@@ -128,6 +121,7 @@ export default {
     };
 
     const onSubmit = async () => {
+<<<<<<< HEAD
       // try {
       //   const response = await axios.post("http://localhost:8080/identity/authentication/token", form.value);
       //   const token = response.data.result.token;
@@ -141,17 +135,39 @@ export default {
 
       axios.post("http://localhost:8080/authentication/token",form.value).then((response) => {
 
+=======
+      try {
+        const response = await axios.post(
+            "http://localhost:8080/authentication/token",
+            form.value
+        );
+>>>>>>> khanhtd
         const token = response.data.result.token;
-
         localStorage.setItem("token", token);
-
         router.push("/home");
-      });
-
-      // axios.get("http://localhost:8080/identity/users").then((response) => {
-      //   console.log(response.data);
-      // });
+      } catch (error) {
+        console.error("Login failed:", error);
+      }
     };
+
+    const checkTokenValidity = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const response = await axios.post(
+              "http://localhost:8080/authentication/introspect",
+              { token }
+          );
+          if (response.data.result.valid) {
+            router.push("/home");
+          }
+        } catch (error) {
+          console.error("Token introspection failed:", error);
+        }
+      }
+    };
+
+    onMounted(checkTokenValidity);
 
     return {
       form,

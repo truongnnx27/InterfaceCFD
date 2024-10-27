@@ -768,7 +768,11 @@ export default {
       console.log("Course info prepared:", this.courseInfo);
 
       // Gửi thông tin khóa học đến máy chủ
+<<<<<<< HEAD
       axios.post("http://localhost:8080/api/v1/courses", this.courseInfo, {
+=======
+      axios.post("http://localhost:/api/v1/courses", this.courseInfo, {
+>>>>>>> khanhtd
         headers: {
           "Content-Type": "application/json"
         }
@@ -784,7 +788,11 @@ export default {
 
             console.log("Form data prepared:", formData.get("files"));
             // Tải tệp lên máy chủ
+<<<<<<< HEAD
             axios.post("http://localhost:8080/api/s3/upload/video", formData, {
+=======
+            axios.post("http://localhost:8080/api/s3/upload", formData, {
+>>>>>>> khanhtd
               headers: {
                 "Content-Type": "multipart/form-data"
               }
