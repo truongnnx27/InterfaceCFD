@@ -429,8 +429,9 @@
                         </div>
                         <!-- Post reply -->
                       </div>
-                      <div class="hoverMenu listenComment">
+                      <div class="hoverMenu">
                         <a href="javascript:;"
+                          class="listenComment"
                         v-if="commentParent.idUserComment === user.id">
                           <svg xmlns="http://www.w3.org/2000/svg" 
                           width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
@@ -439,7 +440,7 @@
                         </a>
                         <div class="popupStyle">
                           <a href="javascript:;"
-                            @click="viewEditCommentToggle(commentParent.id)">
+                            @click="viewEditCommentToggle(commentParent.id, commentParent.commentText)">
                             <p>Edit</p>
                           </a>
                           <a href="javascript:;"
@@ -526,8 +527,9 @@
                               </div>
                               <!-- Post reply to reply-->
                             </div>
-                            <div class="hoverMenu listenReply">
+                            <div class="hoverMenu">
                               <a href="javascript:;"
+                                class="listenReply"
                                 v-if="commentChild.idUserComment === user.id">
                                 <svg xmlns="http://www.w3.org/2000/svg" 
                                 width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
@@ -536,7 +538,7 @@
                               </a>
                               <div class="popupStyle">
                                 <a href="javascript:;" 
-                                  @click="viewEditCommentToggle(commentChild.id)">
+                                  @click="viewEditCommentToggle(commentChild.id, commentChild.commentText)">
                                   <p>Edit</p>
                                 </a>
                                 <a href="javascript:;"
@@ -696,8 +698,9 @@ import { number } from 'yup';
         this.viewPostReply[commentId] = !this.viewPostReply[commentId]
         this.viewEditComment[commentId] = false
       },
-      viewEditCommentToggle(commentId){
+      viewEditCommentToggle(commentId, textComment){
         this.viewEditComment[commentId] = !this.viewEditComment[commentId]
+        this.editCommentText[commentId] = textComment
         this.viewPostReply[commentId] = false
       },
       buttonNumberShowCommentToggle(commentId){
