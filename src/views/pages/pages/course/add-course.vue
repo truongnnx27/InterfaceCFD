@@ -327,7 +327,9 @@
 <script>
 import LecturePopup from "@/components/LecturePopup.vue";
 import SectionPopup from "@/components/SectionPopup.vue";
-import axios from "axios";
+import baseApi from "@/axios";
+import {computed} from "vue";
+import {useStore} from "vuex";
 import Swal from 'sweetalert2';
 import {router} from "@/router";
 export default {
@@ -335,7 +337,10 @@ export default {
     LecturePopup,
     SectionPopup
   },
+
   data() {
+    const store = useStore();
+    const UserInfo = computed(() => store.state.userInfo);
     return {
       Category: ["Category 01", "Category 02", "Category 03", "Category 04"],
       Level: ["Level 01", "Level 02", "Level 03", "Level 04"],
@@ -351,10 +356,10 @@ export default {
         category: "",
         level: "",
         description: "",
-        coverImage: null,
+        img: null,
         price: "",
         published: false,
-        instructor: "734c971a-5a09-4847-957e-1ee0a847aa3a",
+        instructor: UserInfo.value.id,
         sections: [],
         createdAt: new Date(),
       },
@@ -768,80 +773,83 @@ export default {
       console.log("Course info prepared:", this.courseInfo);
 
       // Gửi thông tin khóa học đến máy chủ
-<<<<<<< HEAD
-      axios.post("http://localhost:8080/api/v1/courses", this.courseInfo, {
-=======
-      axios.post("http://localhost:/api/v1/courses", this.courseInfo, {
->>>>>>> khanhtd
+      baseApi.post("/api/v1/courses", this.courseInfo, {
         headers: {
           "Content-Type": "application/json"
         }
       })
           .then(response => {
             console.log("Metadata saved:", response.data, response.status);
+            if (response.status === 201) {
+              Swal.fire({
+                title: "Course added successfully",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 2000
+              });
 
-            // Chuẩn bị dữ liệu biểu mẫu để tải lên tệp
-            const formData = new FormData();
-            files.forEach(file => {
-              formData.append("files", file);
-            });
+              // Chuẩn bị dữ liệu biểu mẫu để tải lên tệp
+              const formData = new FormData();
+              files.forEach(file => {
+                formData.append("files", file);
+              });
 
-            console.log("Form data prepared:", formData.get("files"));
-            // Tải tệp lên máy chủ
-<<<<<<< HEAD
-            axios.post("http://localhost:8080/api/s3/upload/video", formData, {
-=======
-            axios.post("http://localhost:8080/api/s3/upload", formData, {
->>>>>>> khanhtd
-              headers: {
-                "Content-Type": "multipart/form-data"
-              }
-            })
-                .then(uploadResponse => {
-                  console.log("Files uploaded:", uploadResponse.data, uploadResponse.status);
-                })
-                .catch(uploadError => {
-                  console.error("Error occurred while uploading files:", uploadError);
-                });
+              console.log("Form data prepared:", formData.get("files"));
+              // Tải tệp lên máy chủ
+              baseApi.post("/api/s3/upload/video", formData, {
+                headers: {
+                  "Content-Type": "multipart/form-data"
+                }
+              })
+                  .then(uploadResponse => {
+                    console.log("Files uploaded:", uploadResponse.data, uploadResponse.status);
+                  })
+                  .catch(uploadError => {
+                    console.error("Error occurred while uploading files:", uploadError);
+                  });
+
+              // Chuyển đến bước cuối cùng
+              this.currentStep = 4;
+              this.isSaving = false; // Re-enable the save button
+              console.log("Current step set to 4");
+
+              // Set a timeout to revert back to step 1 after 10 seconds
+              setTimeout(() => {
+                router.push("/instructor/instructor-dashboard");
+              }, 5000);
+
+            }
 
           })
           .catch(error => {
-            console.error("Error occurred:", error);
-            if (error.response) {
-              console.error("Response data:", error.response.data);
-              console.error("Response status:", error.response.status);
-              console.error("Response headers:", error.response.headers);
-            } else if (error.request) {
-              console.error("Request data:", error.request);
-            } else {
-              console.error("Error message:", error.message);
+            if (error.status === 400) {
+              Swal.fire({
+                title: "Error",
+                text: "Please fill in all required fields",
+                icon: "error",
+                showConfirmButton: false,
+                timer: 2000
+              });
+            }else if (error.status === 500) {
+              router.push("/error-500");
+            }else {
+              router.push("/error-404");
             }
-            console.error("Error config:", error.config);
           });
-
-      // Chuyển đến bước cuối cùng
-      this.currentStep = 4;
-      this.isSaving = false; // Re-enable the save button
-      console.log("Current step set to 4");
-
-      // Set a timeout to revert back to step 1 after 10 seconds
-      setTimeout(() => {
-        router.push("/instructor/instructor-dashboard");
-      }, 5000);
     },
     handleFileUpload(event) {
       const coverImage = event.target.files[0];
         // Tải ảnh lên S3
         const formData = new FormData();
-        formData.append("coverImage", coverImage);
-        axios.post("http://localhost:8080/api/s3/upload/image", formData, {
+        formData.append("img", coverImage);
+        baseApi.post("/api/s3/upload/image", formData, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
         })
             .then(response => {
               console.log("Image uploaded:", response.data);
-              this.courseInfo.coverImage = response.data.urlCoverImage;
+              this.courseInfo.coverImage = response.data.urlImg;
             })
             .catch(error => {
               console.error("Error occurred while uploading file:", error);

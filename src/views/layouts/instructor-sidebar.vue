@@ -6,7 +6,7 @@
           <div class="profile-bg">
             <div class="profile-img">
               <router-link to="/instructor/instructor-profile"
-                ><img src="@/assets/img/user/user-17.jpg" alt="Img"
+                ><img :src="user?.avatarUrl" alt="Img" class="object-fit-cover"
               /></router-link>
             </div>
           </div>
@@ -242,11 +242,17 @@
   </div>
 </template>
 <script>
+import { ref } from "vue";
+import {useStore} from "vuex";
 export default {
   data() {
+    const store = useStore();
+    const user = ref(store.state.userInfo);
+
     return {
       activeClass: "active",
       Available: ["I am Available Now", "Not Available"],
+      user
     };
   },
   methods: {

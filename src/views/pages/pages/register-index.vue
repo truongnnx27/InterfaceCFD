@@ -1,300 +1,126 @@
 <template>
-    <div class="row">
-      <login-banner></login-banner>
-
-      <div class="col-md-6 login-wrap-bg">
-        <!-- Login -->
-        <div class="login-wrapper">
-          <div class="loginbox">
-            <div class="img-logo">
-              <img src="@/assets/img/logo.svg" class="img-fluid" alt="Logo" />
-              <div class="back-home">
-                <router-link to="/home/">Back to Home</router-link>
-              </div>
-            </div>
-            <h1>Sign up</h1>
-            <Form
-              class="register"
-              @submit="onSubmit"
-              :validation-schema="schema"
-              v-slot="{ errors }"
-            >
-              <div class="form-group">
-                <label class="form-control-label">Full Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter your Full Name"
-                />
-              </div>
-              <div class="form-group">
-                <label class="form-control-label">Email</label>
-                <Field
-                  name="email"
-                  type="text"
-                  class="form-control mt-2"
-                  :class="{ 'is-invalid': errors.email }"
-                />
-                <div class="invalid-feedback">{{ errors.email }}</div>
-                <div class="emailshow text-danger" id="email"></div>
-              </div>
-              <div class="form-group">
-                <label class="form-control-label">Password</label>
-                <div class="pass-group" id="passwordInput">
-                  <input
-                    name="password"
-                    :type="showPassword ? 'text' : 'password'"
-                    class="form-control pass-input mt-2"
-                    :class="{ 'password-error': validationError }"
-                    v-model="password"
-                    @input="handlePasswordChange"
-                  />
-                  <span @click="toggleShow" class="toggle-password">
-                    <i
-                      :class="{
-                        'fas fa-eye': showPassword,
-                        'fas fa-eye-slash': !showPassword,
-                      }"
-                    ></i>
-                  </span>
-                  <div class="invalid-feedback">{{ errors.password }}</div>
-                  <div class="emailshow text-danger" id="password"></div>
-
-                  <!-- Conditionally render password strength only if there is a password -->
-                  <div
-                    v-if="password"
-                    id="passwordStrength"
-                    style="display: flex"
-                    :class="[
-                      'password-strength',
-                      strength === 'poor' ? 'poor-active' : '',
-                      strength === 'weak' ? 'avg-active' : '',
-                      strength === 'strong' ? 'strong-active' : '',
-                      strength === 'heavy' ? 'heavy-active' : '',
-                    ]"
-                  >
-                    <span
-                      id="poor"
-                      class="active"
-                      :class="{ active: strength === 'poor' }"
-                    ></span>
-                    <span
-                      id="weak"
-                      class="active"
-                      :class="{ active: strength === 'weak' }"
-                    ></span>
-                    <span
-                      id="strong"
-                      class="active"
-                      :class="{ active: strength === 'strong' }"
-                    ></span>
-                    <span
-                      id="heavy"
-                      class="active"
-                      :class="{ active: strength === 'heavy' }"
-                    ></span>
-                  </div>
-
-                  <!-- Conditionally render password information only if there is a password -->
-                  <div v-if="password" id="passwordInfo">
-                    <span v-if="validationError === 1"></span>
-                    <span v-else-if="validationError === 2" style="color: red"
-                      >😠 Weak. Must contain at least 8 characters</span
-                    >
-                    <span v-else-if="validationError === 3" style="color: orange"
-                      >😲 Average. Must contain at least 1 letter or number</span
-                    >
-                    <span v-else-if="validationError === 4" style="color: blue"
-                      >🙂 Almost. Must contain a special symbol</span
-                    >
-                    <span v-else-if="validationError === 5" style="color: green"
-                      >😊 Awesome! You have a secure password.</span
-                    >
-                  </div>
-                </div>
-              </div>
-              <div class="form-check remember-me">
-                <label class="form-check-label mb-0">
-                  <input class="form-check-input" type="checkbox" name="remember" /> I
-                  agree to the
-                  <router-link to="/pages/term-condition">Terms of Service</router-link> and
-                  <router-link to="/pages/privacy-policy">Privacy Policy.</router-link>
-                </label>
-              </div>
-              <div class="d-grid">
-                <button class="btn btn-primary btn-start" type="submit">
-                  Create Account
-                </button>
-              </div>
-            </Form>
-          </div>
-          <div class="google-bg text-center">
-            <span><a href="javascript:void(0);">Or sign in with</a></span>
-            <div class="sign-google">
-              <ul>
-                <li>
-                  <a href="javascript:void(0);"
-                    ><img
-                      src="@/assets/img/net-icon-01.png"
-                      class="img-fluid"
-                      alt="Logo"
-                    />
-                    Sign In using Google</a
-                  >
-                </li>
-                <li>
-                  <a href="javascript:void(0);"
-                    ><img
-                      src="@/assets/img/net-icon-02.png"
-                      class="img-fluid"
-                      alt="Logo"
-                    />Sign In using Facebook</a
-                  >
-                </li>
-              </ul>
-            </div>
-            <p class="mb-0">
-              Already have an account? <router-link to="/">Sign in</router-link>
-            </p>
-          </div>
-        </div>
-        <!-- /Login -->
+  <div>
+    <h2>Register</h2>
+    <form @submit.prevent="submitForm">
+      <div>
+        <label for="username">Username:</label>
+        <input type="text" v-model="form.username" required minlength="3" />
+        <span v-if="form.username.length < 3 && form.username.length > 0">Username must be at least 3 characters long.</span>
       </div>
-    </div>
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" v-model="form.password" required minlength="3" />
+        <span v-if="form.password.length < 3 && form.password.length > 0">Password must be at least 3 characters long.</span>
+      </div>
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" v-model="form.email" required />
+      </div>
+      <div>
+        <label for="fullname">Full Name:</label>
+        <input type="text" v-model="form.fullname" required />
+      </div>
+      <div>
+        <label for="birthday">Birthday:</label>
+        <input type="date" v-model="form.birthday" required />
+      </div>
+      <div>
+        <label for="gender">Gender:</label>
+        <select v-model="form.gender" required>
+          <option value="">Select Gender</option>
+          <option value="MALE">Male</option>
+          <option value="FEMALE">Female</option>
+          <option value="OTHER">Other</option>
+        </select>
+      </div>
+      <div>
+        <label for="phone">Phone Number:</label>
+        <input type="text" v-model="form.phone" required />
+      </div>
+      <div>
+        <label for="avatar">Upload Avatar:</label>
+        <input type="file" @change="onFileChange" />
+      </div>
+      <button type="submit">Register</button>
+    </form>
+  </div>
 </template>
+
 <script>
-import { Form, Field } from "vee-validate";
-import { router } from "@/router";
-import VueRouter from "vue-router";
-import * as Yup from "yup";
+import { useRouter } from 'vue-router';
+import baseApi from "@/axios";
 export default {
   data() {
     return {
-      password: "",
-      showPassword: false,
-      validationError: 0,
-      strength: "",
-      errors: {
-        password: "",
-      },
+      form: {
+        username: '',
+        password: '',
+        email: '',
+        fullname: '',
+        birthday: '',
+        gender: '',
+        phone: '',
+        avatar: null
+      }
     };
-  },
-  components: {
-    Form,
-    Field,
-  },
-  computed: {
-    buttonLabel() {
-      return this.showPassword ? "Hide" : "Show";
-    },
   },
   setup() {
-    const schema = Yup.object().shape({
-      email: Yup.string().required("Email is required").email("Email is invalid"),
-      password: Yup.string()
-        .min(6, "Password must be at least 6 characters")
-        .required("Password is required"),
-    });
-    const onSubmit = (values) => {
-      if (values.password === values.password) {
-        let Rawdata = localStorage.getItem("storedData");
-        let Pdata = [];
-        Pdata = JSON.parse(Rawdata);
-        const Eresult = Pdata.find(({ email }) => email == values.email);
-        if (Eresult) {
-          document.getElementById("email").innerHTML = "This email are already exist";
-        } else {
-          Pdata.push(values);
-          const jsonData = JSON.stringify(Pdata);
-          router.push("/");
-          localStorage.setItem("storedData", jsonData);
-        }
-      } else {
-        document.getElementById("password").innerHTML = "Password not matching";
-      }
-    };
-    return {
-      schema,
-      onSubmit,
-    };
+    const router = useRouter();
+    return { router };
   },
   methods: {
-    handlePasswordChange() {
-      let passwordValue = this.password;
-      let passwordLength = passwordValue.length;
-      let poorPassword = /[a-z]/.test(passwordValue);
-      let weakPassword = /(?=.*?[0-9])/.test(passwordValue);
-      let strongPassword = /(?=.*?[#?!@$%^&*-])/.test(passwordValue);
-      let whitespace = /^\s*$/.test(passwordValue);
+    onFileChange(event) {
+      const file = event.target.files[0];
+      this.form.avatar = file;
+    },
+    async submitForm() {
+      try {
+        const formData = new FormData();
+        formData.append('img', this.form.avatar);
 
-      if (passwordValue !== "") {
-        if (whitespace) {
-          this.errors.password = "whitespaces are not allowed";
+        const uploadResponse = await baseApi.post('/api/s3/upload/image', formData,{
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+
+        const urlImg = uploadResponse.data.urlImg;
+
+        const userData = {
+          username: this.form.username,
+          email: this.form.email,
+          password: this.form.password,
+          fullname: this.form.fullname,
+          birthday: this.form.birthday,
+          gender: this.form.gender,
+          phone: this.form.phone,
+          avatarUrl: urlImg
+        };
+
+        const userResponse = await baseApi.post('http://localhost:8080/users', userData, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const userResult = userResponse.data;
+
+        console.log(userResult);
+
+        if (userResult.code === 1000) {
+          alert('User created successfully!');
+          this.router.push('/home');
         } else {
-          this.errors.password = "";
-          this.poorPasswordStrength(
-            passwordLength,
-            poorPassword,
-            weakPassword,
-            strongPassword
-          );
-          this.weakPasswordStrength(
-            passwordLength,
-            poorPassword,
-            weakPassword,
-            strongPassword
-          );
-          this.strongPasswordStrength(
-            passwordLength,
-            poorPassword,
-            weakPassword,
-            strongPassword
-          );
-          this.heavyPasswordStrength(
-            passwordLength,
-            poorPassword,
-            weakPassword,
-            strongPassword
-          );
+          alert('Failed to create user.');
         }
-      } else {
-        this.errors.password = "";
-        this.validationError = 0;
-        this.strength = "";
+      } catch (error) {
+        console.error('An error occurred:', error);
+        alert('An error occurred while creating the user.');
       }
-    },
-
-    toggleShow() {
-      this.showPassword = !this.showPassword;
-    },
-
-    poorPasswordStrength(passwordLength, poorPassword, weakPassword, strongPassword) {
-      if (passwordLength < 8) {
-        this.validationError = 2;
-        this.strength = "poor";
-      }
-    },
-
-    weakPasswordStrength(passwordLength, poorPassword, weakPassword, strongPassword) {
-      if (passwordLength >= 8 && (poorPassword || weakPassword || strongPassword)) {
-        this.validationError = 3;
-        this.strength = "weak";
-      }
-    },
-
-    strongPasswordStrength(passwordLength, poorPassword, weakPassword, strongPassword) {
-      if (passwordLength >= 8 && poorPassword && (weakPassword || strongPassword)) {
-        this.validationError = 4;
-        this.strength = "strong";
-      }
-    },
-
-    heavyPasswordStrength(passwordLength, poorPassword, weakPassword, strongPassword) {
-      if (passwordLength >= 8 && poorPassword && weakPassword && strongPassword) {
-        this.validationError = 5;
-        this.strength = "heavy";
-      }
-    },
-  },
+    }
+  }
 };
 </script>
+
+<style scoped>
+</style>

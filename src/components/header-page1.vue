@@ -32,11 +32,11 @@
       <div class="users dropdown-menu dropdown-menu-right" data-popper-placement="bottom-end">
         <div class="user-header">
           <div class="avatar avatar-sm">
-            <img src="@/assets/img/user/user-17.jpg" alt="User Image" class="avatar-img rounded-circle">
+            <img :src="user?.avatarUrl" alt="User Image" class="avatar-img rounded-circle">
           </div>
           <div class="user-text">
-            <h6>Eugene Andre</h6>
-            <p class="text-muted mb-0">Instructor</p>
+            <h6> {{user?.fullname}} </h6>
+            <p class="text-muted mb-0"> {{user?.roleEntity.roleName}} </p>
           </div>
         </div>
         <router-link class="dropdown-item" to="/instructor/instructor-dashboard"><i class="feather-home me-1"></i> Dashboard</router-link>
@@ -47,17 +47,22 @@
             <input class="form-check-input" type="checkbox" id="night-mode">
           </div>
         </div>
-        <router-link class="dropdown-item" to="/"><i class="feather-log-out me-1"></i> Logout</router-link>
+        <button class="dropdown-item" @click="confirmLogout"><i class="feather-log-out me-1"></i> Logout</button>
       </div>
     </li>
   </ul>
 </template>
 <script>
 import { ref, onMounted } from "vue";
+import {useStore} from "vuex";
+import Swal from "sweetalert2";
+import {router} from "@/router";
 export default {
   setup() {
     const darkModeToggle = ref(null);
     const lightModeToggle = ref(null);
+    const store = useStore();
+    const user = ref(store.state.userInfo);
 
     // Function to enable dark mode
     function enableDarkMode() {
@@ -65,6 +70,24 @@ export default {
       darkModeToggle.value.classList.remove("activate");
       lightModeToggle.value.classList.add("activate");
       localStorage.setItem("darkMode", "enabled");
+    }
+
+    function confirmLogout() {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You will be logged out of your account.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, log me out"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          user.value = null;
+          localStorage.removeItem("token");
+          router.push("/");
+        }
+      });
     }
 
     // Function to disable dark mode
@@ -90,6 +113,8 @@ export default {
       lightModeToggle,
       enableDarkMode,
       disableDarkMode,
+      user,
+      confirmLogout,
     };
   },
 };

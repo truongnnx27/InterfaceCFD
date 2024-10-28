@@ -1,13 +1,22 @@
 // src/axios.js
 import axios from 'axios';
 
-const instance = axios.create({
-    baseURL: 'http://localhost:8080/identity/api', // Thay đổi URL này theo backend của bạn
-    timeout: 1000,
-    headers: {
-        'Content-Type': 'application/json'
-    }
+const baseApi = axios.create({
+    baseURL: 'http://localhost:8080',
 });
 
-export default instance;
+baseApi.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+export default baseApi;
 
