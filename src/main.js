@@ -174,8 +174,9 @@ import '@/assets/css/feather.css';
 import "boxicons/css/boxicons.min.css";
 import '@/assets/css/style.css';
 import '@/assets/css/vue.css';
+import {createStore} from "vuex";
 
-  
+
 
 const app = createApp(App)
 
@@ -330,7 +331,21 @@ app.component('support-tickets-modal',Support_Tickets_Modal)
 app.component('instructor-withdraw-modal',Instructor_Withdraw_Modal)
 
 
-
+const store = createStore({
+    state: {
+        userInfo: null
+    },
+    mutations: {
+        setUserInfo(state, userInfo) {
+            state.userInfo = userInfo;
+        }
+    },
+    commit: {
+        setUserInfo({commit}, userInfo) {
+            commit('setUserInfo', userInfo);
+        }
+    }
+});
 app.component('date-picker', DatePicker);
 app.component('vue-select', VueSelect)
 app.component(VueFeather.name, VueFeather)
@@ -341,4 +356,5 @@ app.use(CKEditor)
 .use(BootstrapVue3)
 .use(BToastPlugin)
 .use(Antd)
+.use(store)
 app.use(router).mount('#app');

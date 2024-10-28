@@ -99,7 +99,8 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { Form, Field } from "vee-validate";
 import * as Yup from "yup";
-import axios from "axios";
+import { useStore } from "vuex";
+import baseApi from "@/axios";
 
 export default {
   components: { Form, Field },
@@ -111,6 +112,8 @@ export default {
     });
     const showPassword = ref(false);
 
+    const store = useStore();
+
     const schema = Yup.object({
       username: Yup.string().required("Username is required"),
       password: Yup.string().required("Password is required"),
@@ -121,7 +124,6 @@ export default {
     };
 
     const onSubmit = async () => {
-<<<<<<< HEAD
       // try {
       //   const response = await axios.post("http://localhost:8080/identity/authentication/token", form.value);
       //   const token = response.data.result.token;
@@ -133,33 +135,39 @@ export default {
       //   console.error("Error during authentication:", error);
       // }
 
-      axios.post("http://localhost:8080/authentication/token",form.value).then((response) => {
+      baseApi
+          .post("/authentication/token", form.value)
+          .then((response) => {
+            const token = response.data.result.token;
 
-=======
-      try {
-        const response = await axios.post(
-            "http://localhost:8080/authentication/token",
-            form.value
-        );
->>>>>>> khanhtd
-        const token = response.data.result.token;
-        localStorage.setItem("token", token);
-        router.push("/home");
-      } catch (error) {
-        console.error("Login failed:", error);
-      }
+            localStorage.setItem("token", token);
+            checkTokenValidity();
+          })
+          .catch((error) => {
+            console.error("Error during authentication:", error);
+          });
     };
 
     const checkTokenValidity = async () => {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const response = await axios.post(
-              "http://localhost:8080/authentication/introspect",
+          const response = await baseApi.post(
+              "/authentication/introspect",
               { token }
           );
           if (response.data.result.valid) {
-            router.push("/home");
+            const handleRedirect = await baseApi.get("/users/myInfo")
+            if (handleRedirect.data.result.roleEntity.roleName === "INSTRUCTOR") {
+              router.push("/instructor/instructor-dashboard");
+            } else if (handleRedirect.data.result.roleEntity.roleName === "STUDENT") {
+              router.push("/home");
+            }else {
+              window.location.href = "http://localhost:9527/#/dashboard";
+            }
+            store.commit("setUserInfo", handleRedirect.data.result);
+          }else {
+            console.log("Token is invalid");
           }
         } catch (error) {
           console.error("Token introspection failed:", error);

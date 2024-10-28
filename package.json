@@ -39,6 +39,7 @@
     "vue3-select2-component": "^0.1.7",
     "vue3-tags-input": "^1.0.12",
     "vue3-tel-input": "^1.0.4",
+    "vuex": "^4.0.2",
     "yup": "^1.4.0"
   },
   "devDependencies": {
