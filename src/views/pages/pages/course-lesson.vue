@@ -572,7 +572,6 @@
 </template>
 <script>
   import axios from 'axios';
-import { number } from 'yup';
   const API_URL = 'http://localhost:8080';
   export default {
     data(){
