@@ -118,8 +118,9 @@ export default {
       localStorage.setItem("userOtp", this.otp);
     },
     onOtpInput(event) {
+      // Chỉ cho phép nhập số
       const input = event.target.value;
-      this.otp = input.replace(/[^0-9]/g, '');
+      this.otp = input.replace(/[^0-9]/g, ''); // loại bỏ mọi ký tự không phải số
     },
     startCountdown() {
       this.countdown = 30;
