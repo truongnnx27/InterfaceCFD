@@ -356,7 +356,7 @@
               <!-- Post comment -->
               <!-- List comment -->
               <ul style="max-width: 100%;">
-                <li style="margin: 30px 0; width: 100%;"
+                <li style="margin: 20px 0; width: 100%;"
                     v-for="(commentParent, index) in comments" :key="index"
                     v-show="commentParent.parentId == null">
                   <div class="instructor-wrap hoverComment"
@@ -576,15 +576,15 @@
   export default {
     data(){
       return {
+        lesson: {
+          id: 66
+        },
+        user: {
+          id: "quockhanh123"
+        },
         comment:{},
         replyText:{},
         editCommentText:{},
-        lesson: {
-          id: 1
-        },
-        user: {
-          id: 1
-        },
         comments:[],
         viewPostReply:{},
         viewEditComment:{},
@@ -609,13 +609,16 @@
       },
       getReplyOfComment(commentParentId){
         if(this.comments.length > 0){
-          let replys = this.findCommentChild(commentParentId)
-          replys.forEach(reply => {
-            let replyToReply = this.findCommentChild(reply.id)
-            if(replyToReply.length > 0){
-              replys = replys.concat(replyToReply);
-            }
-          });
+          const replys = [];
+          const getRepliesRecursively = (parentId) => {
+            let childComments = this.findCommentChild(parentId)
+            childComments.forEach(element => {
+              replys.push(element)
+              getRepliesRecursively(element.id)
+            });
+          }
+
+          getRepliesRecursively(commentParentId)
           return replys;
         } else {
           return []
@@ -632,6 +635,7 @@
       },
       postCommentInLesson(comment){
         if(comment.commentText != ''){
+          comment.lectureId = this.lesson.id
           axios.post(API_URL + "/postCommentLesson", comment)
           .then(() => {
             console.error("Thêm bình luận thành công")
@@ -647,6 +651,8 @@
         if(replyText != ''){
           this.comment.commentId = parentId
           this.comment.commentText = replyText
+          this.replyText[parentId] = ''
+          this.comment.lectureId = this.lesson.id
           axios.post(API_URL + "/postCommentLesson", this.comment)
           .then(() => {
             console.error("Trả lời bình luận thành công")
