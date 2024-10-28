@@ -96,9 +96,9 @@ export default {
   },
   methods: {
   async pay() {
-    const amount = 160000; 
-    const courseId = 5; 
-    const userId = 1; 
+    const price = 160000; 
+    const courseId = 1; 
+    const userId = `e0352f96-5c51-46c5-b311-c9f03de46ba2`; 
 
     try {
       let paymentUrl;
@@ -106,7 +106,7 @@ export default {
       if (this.paymentMethod === 'paypal') {
         const response = await axios.post('http://localhost:8081/api/payments/paypal/pay', null, {
           params: {
-            amount,
+            price,
             courseId,
             userId,
           },
@@ -125,7 +125,7 @@ export default {
             null,
             {
               params: {
-                amount,
+                price,
                 courseId,
                 userId,
               },
