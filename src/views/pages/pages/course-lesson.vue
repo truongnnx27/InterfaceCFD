@@ -345,11 +345,11 @@
                         class="form-control"
                         placeholder="Your Comments"
                         style="width: 100%;"
-                        v-model="comment.commentText"></textarea>
+                        v-model="postComment"></textarea>
                     </div>
                     <button class="submit-btn" type="button"
                       style="height: 30px; padding: 0;"
-                      @click="postCommentInLesson(comment)">Submit</button>
+                      @click="postCommentInLesson(postComment)">Submit</button>
                   </form>
                 </div>
               </div>
@@ -391,7 +391,7 @@
                             <div style="display: flex; gap: 10px; flex-wrap: wrap;"> 
                               <button class="submit-btn" type="button"
                               style="height: 30px; padding: 0;"
-                              @click="putComment(commentParent.id, editCommentText[commentParent.id], commentParent.idUserComment)">Edit</button>
+                              @click="putComment(commentParent, editCommentText[commentParent.id], commentParent.idUserComment)">Edit</button>
                               <button class="submit-btn" type="button"
                               style="height: 30px; padding: 0; border: none; background-clip: border-box;"
                               @click="viewEditCommentToggle(commentParent.id)">Cancel</button>
@@ -490,7 +490,7 @@
                                   <div style="display: flex; gap: 10px; flex-wrap: wrap;"> 
                                     <button class="submit-btn" type="button"
                                     style="height: 30px; padding: 0;"
-                                    @click="putComment(commentChild.id, editCommentText[commentChild.id], commentChild.idUserComment)">Edit</button>
+                                    @click="putComment(commentChild, editCommentText[commentChild.id], commentChild.idUserComment)">Edit</button>
                                     <button class="submit-btn" type="button"
                                     style="height: 30px; padding: 0; border: none; background-clip: border-box;"
                                     @click="viewEditCommentToggle(commentChild.id)">Cancel</button>
@@ -572,11 +572,13 @@
 </template>
 <script>
   import axios from 'axios';
+  import SockJS from 'sockjs-client';
+  import { Client } from '@stomp/stompjs';
   const API_URL = 'http://localhost:8080';
   export default {
     data(){
       return {
-        lesson: {
+        lecture: {
           id: 66
         },
         user: {
@@ -585,31 +587,64 @@
         comment:{},
         replyText:{},
         editCommentText:{},
+        postComment:"",
         comments:[],
         viewPostReply:{},
         viewEditComment:{},
-        buttonNumberShowComment: {}
+        buttonNumberShowComment: {},
+        stompClient: null
       };
     },
     created(){
+      this.connectSocket()
       this.resetForm()
-      this.getCommentInLesson(this.lesson.id)
+      // this.getCommentInLesson(this.lecture.id)
     },
     methods:{
-      getCommentInLesson(idLesson){
-        axios.get(API_URL + `/getCommentLesson/${idLesson}`)
+      connectSocket(){
+        this.stompClient = new Client({
+        webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+          reconnectDelay: 50000,
+          debug: function (str) {
+            console.log(str);
+          },
+          onConnect: () => {
+            // Đăng ký vào channel nhận comments
+            this.stompClient.subscribe('/topic/comments', (message) => {
+              if (message.body) {
+                this.comments.push(JSON.parse(message.body));
+                console.log(this.comment)
+              }
+            });
+          },
+          onStompError: (frame) => {
+                console.error('Broker reported error: ' + frame.headers['message']);
+          },
+        });
+        
+        this.stompClient.activate(); // Kích hoạt client để kết nối
+      },
+      sendComment(comment) {
+        if (this.stompClient && this.stompClient.connected) {
+          this.stompClient.publish({
+            destination: '/app/comment',
+            body: JSON.stringify(comment),
+          });
+        }
+       },
+      getCommentInLesson(idLecture){
+        axios.get(API_URL + `/getCommentLecture/${idLecture}`)
         .then((comment) => {
           this.comments = comment.data
           this.comments = this.comments.reverse()
-          console.log("Truy xuất comment của lesson " + this.lesson.id + " thành công")
+          console.log("Truy xuất comment của lesson " + this.lecture.id + " thành công")
         })
         .catch((error) => {
-          console.log("Truy xuất comment của lesson " + this.lesson.id + " không thành công: " + error)
+          console.log("Truy xuất comment của lesson " + this.lecture.id + " không thành công: " + error)
         })
       },
       getReplyOfComment(commentParentId){
-        if(this.comments.length > 0){
-          const replys = [];
+        const replys = [];
           const getRepliesRecursively = (parentId) => {
             let childComments = this.findCommentChild(parentId)
             childComments.forEach(element => {
@@ -617,12 +652,8 @@
               getRepliesRecursively(element.id)
             });
           }
-
-          getRepliesRecursively(commentParentId)
-          return replys;
-        } else {
-          return []
-        }
+        getRepliesRecursively(commentParentId)
+        return replys;
       },
       findCommentChild(parentId){
         let commentChilds = []
@@ -633,35 +664,35 @@
           return []
         }
       },
-      postCommentInLesson(comment){
-        if(comment.commentText != ''){
-          comment.lectureId = this.lesson.id
-          axios.post(API_URL + "/postCommentLesson", comment)
+      postCommentInLesson(commentText){
+        if(commentText != ''){
+          this.comment.commentText = commentText
+          this.postComment = ''
+          axios.post(API_URL + "/postCommentLecture", this.comment)
           .then(() => {
-            console.error("Thêm bình luận thành công")
-            this.getCommentInLesson(this.lesson.id)
+            console.log("Thêm bình luận thành công")
+            this.getCommentInLesson(this.lecture.id)
             this.resetForm()
           })
           .catch((error) => {
-            console.error("Thêm bình luận không thành công:", error);
+            console.log("Thêm bình luận không thành công:", error);
           })
         }
       },
       postReplyInLesson(replyText, parentId){
         if(replyText != ''){
-          this.comment.commentId = parentId
+          this.comment.parentId = parentId
           this.comment.commentText = replyText
           this.replyText[parentId] = ''
-          this.comment.lectureId = this.lesson.id
-          axios.post(API_URL + "/postCommentLesson", this.comment)
+          axios.post(API_URL + "/postCommentLecture", this.comment)
           .then(() => {
-            console.error("Trả lời bình luận thành công")
-            this.getCommentInLesson(this.lesson.id)
+            console.log("Trả lời bình luận thành công")
+            this.getCommentInLesson(this.lecture.id)
             this.viewPostReplyToggle(parentId)
             this.resetForm()
           })
           .catch((error) => {
-            console.error("Trả lời bình luận không thành công:", error);
+            console.log("Trả lời bình luận không thành công:", error);
           })
         }
       },
@@ -669,34 +700,35 @@
         if(userComment === this.user.id){
           axios.delete(API_URL + `/deleteComment/${commentId}`)
           .then(() => {
-            console.error("Xóa bình luận thành công")
-            this.getCommentInLesson(this.lesson.id)
-            this.replyText[commentId]
+            console.log("Xóa bình luận " + commentId +" thành công")
+            this.getCommentInLesson(this.lecture.id)
             this.resetForm()
           })
           .catch((error) => {
-            console.error("Xóa bình luận không thành công:", error);
+            console.log("Xóa bình luận " + commentId +" không thành công:", error);
           })
         } else {
-          console.error("Không phải quyền người dùng")
+          console.log("Không phải quyền người dùng")
         }
       },
-      putComment(commentId, editCommentText, userComment){
+      putComment(comment, editCommentText, userComment){
         if(userComment === this.user.id){
           this.comment.commentText = editCommentText
-          axios.put(API_URL + `/putComment/${commentId}`, this.comment)
+          this.comment.id = comment.id
+          this.comment.parentId = comment.parentId
+          axios.put(API_URL + `/putComment`, this.comment)
           .then(() => {
-            console.error("Chỉnh sửa bình luận thành công")
-            this.getCommentInLesson(this.lesson.id)
+            console.log("Chỉnh sửa bình luận " + comment.id + " thành công")
+            this.getCommentInLesson(this.lecture.id)
             this.resetForm()
-            this.editCommentText[commentId] = ''
-            this.viewEditComment[commentId] = false
+            this.editCommentText[comment.id] = ''
+            this.viewEditComment[comment.id] = false
           })
           .catch((error) => {
-            console.error("Chỉnh sửa bình luận không thành công:", error);
+            console.log("Chỉnh sửa bình luận " + comment.id + " không thành công:", error);
           })
         } else {
-          console.error("Không phải quyền người dùng")
+          console.log("Không phải quyền người dùng")
         }
       },
       viewPostReplyToggle(commentId){
@@ -713,11 +745,12 @@
       },
       resetForm(){
         this.comment = {
+          id: null,
           commentText: "",
-          userId: this.user.id,
-          lessonId: this.lesson.id,
+          idUserComment: this.user.id,
+          lectureId: this.lecture.id,
           courseId: null,
-          commentId: null,
+          parentId: null,
           star: 0
         }
       }
