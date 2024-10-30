@@ -594,7 +594,7 @@
       };
     },
     created(){
-      this.connectSocket()
+      // this.connectSocket()
       this.resetForm()
       this.getCommentInLesson(this.lecture.id)
     },
