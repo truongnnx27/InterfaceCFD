@@ -5,7 +5,7 @@
       <div class="section-header aos" data-aos="fade-up">
         <div class="section-sub-head">
           <span>What’s New</span>
-          <h2>Featured Courses</h2>
+          <h2>New Courses</h2>
         </div>
         <div class="all-btn all-category d-flex align-items-center">
           <router-link to="/course/course-list" class="btn btn-primary">All Courses</router-link>
@@ -19,7 +19,7 @@
       </div>
       <div class="course-feature">
         <div class="row">
-          <div class="col-lg-4 col-md-6 d-flex">
+          <!-- <div class="col-lg-4 col-md-6 d-flex">
             <div class="course-box d-flex aos" data-aos="fade-up">
               <div class="product">
                 <div class="product-img">
@@ -307,7 +307,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="col-lg-4 col-md-6 d-flex">
             <div class="course-box d-flex aos" data-aos="fade-up">
               <div class="product">
@@ -366,6 +366,7 @@
               </div>
             </div>
           </div>
+          <!-- Home New-course -->
         </div>
       </div>
     </div>
