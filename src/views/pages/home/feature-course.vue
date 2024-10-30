@@ -19,296 +19,9 @@
       </div>
       <div class="course-feature">
         <div class="row">
-          <!-- <div class="col-lg-4 col-md-6 d-flex">
-            <div class="course-box d-flex aos" data-aos="fade-up">
-              <div class="product">
-                <div class="product-img">
-                  <router-link to="/course/course-details">
-                    <img class="img-fluid" alt="" src="@/assets/img/course/course-01.jpg" />
-                  </router-link>
-                  <div class="price">
-                    <h3>$300 <span>$99.00</span></h3>
-                  </div>
-                </div>
-                <div class="product-content">
-                  <div class="course-group d-flex">
-                    <div class="course-group-img d-flex">
-                      <router-link to="/instructor/instructor-profile"><img src="@/assets/img/user/user1.jpg" alt=""
-                          class="img-fluid" /></router-link>
-                      <div class="course-name">
-                        <h4>
-                          <router-link to="/instructor/instructor-profile">Nicole Brown</router-link>
-                        </h4>
-                        <p>Instructor</p>
-                      </div>
-                    </div>
-                    <div class="course-share d-flex align-items-center justify-content-center">
-                      <a href="javascript:void(0);"><i class="fa-regular fa-heart"></i></a>
-                    </div>
-                  </div>
-                  <h3 class="title instructor-text">
-                    <router-link to="/course/course-details">Information About UI/UX Design Degree</router-link>
-                  </h3>
-                  <div class="course-info d-flex align-items-center">
-                    <div class="rating-img d-flex align-items-center">
-                      <img src="@/assets/img/icon/icon-01.svg" alt="" />
-                      <p>12+ Lesson</p>
-                    </div>
-                    <div class="course-view d-flex align-items-center">
-                      <img src="@/assets/img/icon/icon-02.svg" alt="" />
-                      <p>9hr 30min</p>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="rating m-0">
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star me-1"></i>
-                      <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
-                    </div>
-                    <div class="all-btn all-category d-flex align-items-center">
-                      <router-link to="/pages/checkout" class="btn btn-primary">BUY NOW</router-link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 d-flex">
-            <div class="course-box d-flex aos" data-aos="fade-up">
-              <div class="product">
-                <div class="product-img">
-                  <router-link to="/course/course-details">
-                    <img class="img-fluid" alt="" src="@/assets/img/course/course-02.jpg" />
-                  </router-link>
-                  <div class="price">
-                    <h3>$400 <span>$99.00</span></h3>
-                  </div>
-                </div>
-                <div class="product-content">
-                  <div class="course-group d-flex">
-                    <div class="course-group-img d-flex">
-                      <router-link to="/instructor/instructor-profile"><img src="@/assets/img/user/user2.jpg" alt=""
-                          class="img-fluid" /></router-link>
-                      <div class="course-name">
-                        <h4>
-                          <router-link to="/instructor/instructor-profile">Jenis R.</router-link>
-                        </h4>
-                        <p>Instructor</p>
-                      </div>
-                    </div>
-                    <div class="course-share d-flex align-items-center justify-content-center">
-                      <a href="javascript:void(0);"><i class="fa-regular fa-heart"></i></a>
-                    </div>
-                  </div>
-                  <h3 class="title instructor-text">
-                    <router-link to="/course/course-details">Wordpress for Beginners - Master Wordpress
-                      Quickly</router-link>
-                  </h3>
-                  <div class="course-info d-flex align-items-center">
-                    <div class="rating-img d-flex align-items-center">
-                      <img src="@/assets/img/icon/icon-01.svg" alt="" />
-                      <p>11+ Lesson</p>
-                    </div>
-                    <div class="course-view d-flex align-items-center">
-                      <img src="@/assets/img/icon/icon-02.svg" alt="" />
-                      <p>6hr 30min</p>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="rating m-0">
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star me-1"></i>
-                      <span class="d-inline-block average-rating"><span>4.3</span> (15)</span>
-                    </div>
-                    <div class="all-btn all-category d-flex align-items-center">
-                      <router-link to="/pages/checkout" class="btn btn-primary">BUY NOW</router-link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 d-flex">
-            <div class="course-box d-flex aos" data-aos="fade-up">
-              <div class="product">
-                <div class="product-img">
-                  <router-link to="/course/course-details">
-                    <img class="img-fluid" alt="" src="@/assets/img/course/course-03.jpg" />
-                  </router-link>
-                  <div class="price combo">
-                    <h3>FREE</h3>
-                  </div>
-                </div>
-                <div class="product-content">
-                  <div class="course-group d-flex">
-                    <div class="course-group-img d-flex">
-                      <router-link to="/instructor/instructor-profile"><img src="@/assets/img/user/user5.jpg" alt=""
-                          class="img-fluid" /></router-link>
-                      <div class="course-name">
-                        <h4>
-                          <router-link to="/instructor/instructor-profile">Jesse Stevens</router-link>
-                        </h4>
-                        <p>Instructor</p>
-                      </div>
-                    </div>
-                    <div class="course-share d-flex align-items-center justify-content-center">
-                      <a href="javascript:void(0);"><i class="fa-regular fa-heart"></i></a>
-                    </div>
-                  </div>
-                  <h3 class="title instructor-text">
-                    <router-link to="/course/course-details">Sketch from A to Z (2023): Become an app
-                      designer</router-link>
-                  </h3>
-                  <div class="course-info d-flex align-items-center">
-                    <div class="rating-img d-flex align-items-center">
-                      <img src="@/assets/img/icon/icon-01.svg" alt="" />
-                      <p>16+ Lesson</p>
-                    </div>
-                    <div class="course-view d-flex align-items-center">
-                      <img src="@/assets/img/icon/icon-02.svg" alt="" />
-                      <p>12hr 30min</p>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="rating m-0">
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star me-1"></i>
-                      <span class="d-inline-block average-rating"><span>4.3</span> (15)</span>
-                    </div>
-                    <div class="all-btn all-category d-flex align-items-center">
-                      <router-link to="/pages/checkout" class="btn btn-primary">BUY NOW</router-link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 d-flex">
-            <div class="course-box d-flex aos" data-aos="fade-up">
-              <div class="product">
-                <div class="product-img">
-                  <router-link to="/course/course-details">
-                    <img class="img-fluid" alt="" src="@/assets/img/course/course-04.jpg" />
-                  </router-link>
-                  <div class="price">
-                    <h3>$500 <span>$99.00</span></h3>
-                  </div>
-                </div>
-                <div class="product-content">
-                  <div class="course-group d-flex">
-                    <div class="course-group-img d-flex">
-                      <router-link to="/instructor/instructor-profile"><img src="@/assets/img/user/user4.jpg" alt=""
-                          class="img-fluid" /></router-link>
-                      <div class="course-name">
-                        <h4>
-                          <router-link to="/instructor/instructor-profile">Nicole Brown</router-link>
-                        </h4>
-                        <p>Instructor</p>
-                      </div>
-                    </div>
-                    <div class="course-share d-flex align-items-center justify-content-center">
-                      <a href="javascript:void(0);"><i class="fa-regular fa-heart"></i></a>
-                    </div>
-                  </div>
-                  <h3 class="title instructor-text">
-                    <router-link to="/course/course-details">Learn Angular Fundamentals From beginning to advance
-                      lavel</router-link>
-                  </h3>
-                  <div class="course-info d-flex align-items-center">
-                    <div class="rating-img d-flex align-items-center">
-                      <img src="@/assets/img/icon/icon-01.svg" alt="" />
-                      <p>10+ Lesson</p>
-                    </div>
-                    <div class="course-view d-flex align-items-center">
-                      <img src="@/assets/img/icon/icon-02.svg" alt="" />
-                      <p>8hr 30min</p>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center justify-content-between">
-                  <div class="rating m-0">
-                    <i class="fas fa-star filled me-1"></i>
-                    <i class="fas fa-star filled me-1"></i>
-                    <i class="fas fa-star filled me-1"></i>
-                    <i class="fas fa-star filled me-1"></i>
-                    <i class="fas fa-star me-1"></i>
-                    <span class="d-inline-block average-rating"><span>4.2</span> (15)</span>
-                    </div>
-                    <div class="all-btn all-category d-flex align-items-center">
-                      <router-link to="/pages/checkout" class="btn btn-primary">BUY NOW</router-link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 d-flex">
-            <div class="course-box d-flex aos" data-aos="fade-up">
-              <div class="product">
-                <div class="product-img">
-                  <router-link to="/course/course-details">
-                    <img class="img-fluid" alt="" src="@/assets/img/course/course-05.jpg" />
-                  </router-link>
-                  <div class="price">
-                    <h3>$300 <span>$99.00</span></h3>
-                  </div>
-                </div>
-                <div class="product-content">
-                  <div class="course-group d-flex">
-                    <div class="course-group-img d-flex">
-                      <router-link to="/instructor/instructor-profile"><img src="@/assets/img/user/user3.jpg" alt=""
-                          class="img-fluid" /></router-link>
-                      <div class="course-name">
-                        <h4>
-                          <router-link to="/instructor/instructor-profile">John Smith</router-link>
-                        </h4>
-                        <p>Instructor</p>
-                      </div>
-                    </div>
-                    <div class="course-share d-flex align-items-center justify-content-center">
-                      <a href="javascript:void(0);"><i class="fa-regular fa-heart"></i></a>
-                    </div>
-                  </div>
-                  <h3 class="title instructor-text">
-                    <router-link to="/course/course-details">Build Responsive Real World Websites with HTML5 and
-                      CSS3</router-link>
-                  </h3>
-                  <div class="course-info d-flex align-items-center">
-                    <div class="rating-img d-flex align-items-center">
-                      <img src="@/assets/img/icon/icon-01.svg" alt="" />
-                      <p>13+ Lesson</p>
-                    </div>
-                    <div class="course-view d-flex align-items-center">
-                      <img src="@/assets/img/icon/icon-02.svg" alt="" />
-                      <p>10hr 30min</p>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="rating m-0">
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star me-1"></i>
-                      <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
-                    </div>
-                    <div class="all-btn all-category d-flex align-items-center">
-                      <router-link to="/pages/checkout" class="btn btn-primary">BUY NOW</router-link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
-          <div class="col-lg-4 col-md-6 d-flex">
+          <!-- Course info item -->
+          <div class="col-lg-4 col-md-6 d-flex"
+              v-for="(course, index) in newCourses" :key="index">
             <div class="course-box d-flex aos" data-aos="fade-up">
               <div class="product">
                 <div class="product-img">
@@ -326,7 +39,7 @@
                           class="img-fluid" /></router-link>
                       <div class="course-name">
                         <h4>
-                          <router-link to="/instructor/instructor-profile">Stella Johnson</router-link>
+                          <router-link to="/instructor/instructor-profile">{{ course.instructor.fullname }}</router-link>
                         </h4>
                         <p>Instructor</p>
                       </div>
@@ -336,8 +49,7 @@
                     </div>
                   </div>
                   <h3 class="title instructor-text">
-                    <router-link to="/course/course-details">C# Developers Double Your Coding Speed with Visual
-                      Studio</router-link>
+                    <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">{{ course.title }}</router-link>
                   </h3>
                   <div class="course-info d-flex align-items-center">
                     <div class="rating-img d-flex align-items-center">
@@ -366,7 +78,7 @@
               </div>
             </div>
           </div>
-          <!-- Home New-course -->
+          <!-- Course info item -->
         </div>
       </div>
     </div>
@@ -457,12 +169,28 @@
 <script>
 import AOS from "aos";
 import "aos/dist/aos.css";
+import axios from "axios";
+const API_URL = 'http://localhost:8080';
 export default {
   data() {
-    return {};
+    return {
+      newCourses:[]
+    };
   },
-
+  methods: {
+    getNewCourses(){
+      axios.get(API_URL + "/getNewCourse")
+      .then(courses => {
+        this.newCourses = courses.data
+        console.log("Truy xuất khóa học mới thành công")
+      })
+      .catch(error => {
+        console.log("Truy xuất khóa học mới thất bại", error)
+      })
+    }
+  },
   mounted() {
+    this.getNewCourses()
     this.$nextTick(() => {
       AOS.init();
     });
