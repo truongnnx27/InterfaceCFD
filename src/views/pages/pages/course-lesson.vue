@@ -572,8 +572,6 @@
 </template>
 <script>
   import axios from 'axios';
-  import SockJS from 'sockjs-client';
-  import { Client } from '@stomp/stompjs';
   const API_URL = 'http://localhost:8080';
   export default {
     data(){
@@ -598,40 +596,40 @@
     created(){
       this.connectSocket()
       this.resetForm()
-      // this.getCommentInLesson(this.lecture.id)
+      this.getCommentInLesson(this.lecture.id)
     },
     methods:{
-      connectSocket(){
-        this.stompClient = new Client({
-        webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
-          reconnectDelay: 50000,
-          debug: function (str) {
-            console.log(str);
-          },
-          onConnect: () => {
-            // Đăng ký vào channel nhận comments
-            this.stompClient.subscribe('/topic/comments', (message) => {
-              if (message.body) {
-                this.comments.push(JSON.parse(message.body));
-                console.log(this.comment)
-              }
-            });
-          },
-          onStompError: (frame) => {
-                console.error('Broker reported error: ' + frame.headers['message']);
-          },
-        });
+      // connectSocket(){
+      //   this.stompClient = new Client({
+      //   webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+      //     reconnectDelay: 50000,
+      //     debug: function (str) {
+      //       console.log(str);
+      //     },
+      //     onConnect: () => {
+      //       // Đăng ký vào channel nhận comments
+      //       this.stompClient.subscribe('/topic/comments', (message) => {
+      //         if (message.body) {
+      //           this.comments.push(JSON.parse(message.body));
+      //           console.log(this.comment)
+      //         }
+      //       });
+      //     },
+      //     onStompError: (frame) => {
+      //           console.error('Broker reported error: ' + frame.headers['message']);
+      //     },
+      //   });
         
-        this.stompClient.activate(); // Kích hoạt client để kết nối
-      },
-      sendComment(comment) {
-        if (this.stompClient && this.stompClient.connected) {
-          this.stompClient.publish({
-            destination: '/app/comment',
-            body: JSON.stringify(comment),
-          });
-        }
-       },
+      //   this.stompClient.activate(); // Kích hoạt client để kết nối
+      // },
+      // sendComment(comment) {
+      //   if (this.stompClient && this.stompClient.connected) {
+      //     this.stompClient.publish({
+      //       destination: '/app/comment',
+      //       body: JSON.stringify(comment),
+      //     });
+      //   }
+      //  },
       getCommentInLesson(idLecture){
         axios.get(API_URL + `/getCommentLecture/${idLecture}`)
         .then((comment) => {
