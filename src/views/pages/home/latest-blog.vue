@@ -1,5 +1,5 @@
 <template>
-  <!-- Latest Blog -->
+  <!-- Latest Blog
   <section class="section latest-blog">
     <div class="container">
       <div class="section-header aos" data-aos="fade-up">
@@ -226,7 +226,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
   <!-- /Latest Blog -->
 </template>
 <script>

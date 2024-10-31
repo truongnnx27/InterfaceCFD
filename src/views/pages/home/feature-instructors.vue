@@ -14,7 +14,7 @@
     </div>
     <Carousel :settings="settings" :breakpoints="breakpoints">
       <Slide
-        v-for="item in feature"
+        v-for="item in intructors"
         :key="item.id"
         class="owl-carousel instructors-course owl-theme"
       >
@@ -24,18 +24,17 @@
               <img
                 class="img-fluid"
                 alt=""
-                :src="require(`@/assets/img/user/${item.img}`)"
-              />
+                :src="'data:image/jpeg;base64,' + item.avatarUrl"
+                style="width: 300px; aspect-ratio: 1/1; object-fit: cover;"/>
             </router-link>
           </div>
           <div class="instructors-content text-center">
             <h5>
-              <router-link to="/instructor/instructor-profile">{{ item.name }}</router-link>
+              <router-link to="/instructor/instructor-profile">{{ item.fullname }}</router-link>
             </h5>
-            <p>{{ item.Developer }}</p>
+            <p>Intructor</p>
             <div class="student-count d-flex justify-content-center">
-              <i :class="item.Class"></i>
-              <span>{{ item.Students }}</span>
+              <span>{{ item.numberUserPayment }} Student folow</span>
             </div>
           </div>
         </div>
@@ -50,10 +49,10 @@
 <script>
 import AOS from "aos";
 import "aos/dist/aos.css";
-import feature from "@/assets/json/feature.json";
-
 import { Carousel, Pagination, Slide } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
+import axios from "axios";
+const API_URL = 'http://localhost:8080';
 export default {
   components: {
     Carousel,
@@ -62,7 +61,7 @@ export default {
   },
   data() {
     return {
-      feature: feature,
+      intructors: [],
     };
   },
   setup() {
@@ -94,7 +93,21 @@ export default {
       },
     };
   },
-
+  created(){
+    this.getTopIntructor()
+  },
+  methods: {
+    getTopIntructor(){
+      axios.get(API_URL + "/getTopIntructor")
+      .then(intructor => {
+        this.intructors = intructor.data
+        console.log("Truy xuất top giảng viên thành công", intructor)
+      })
+      .catch(error => {
+        console.log("Truy xuất giảng viên thất bại", error)
+      })
+    }
+  },
   mounted() {
     this.$nextTick(() => {
       AOS.init();

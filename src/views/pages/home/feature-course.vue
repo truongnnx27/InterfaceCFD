@@ -25,11 +25,13 @@
             <div class="course-box d-flex aos" data-aos="fade-up">
               <div class="product">
                 <div class="product-img">
-                  <router-link to="/course/course-details">
-                    <img class="img-fluid" alt="" src="@/assets/img/course/course-06.jpg" />
+                  <router-link :to="{ path: '/course/course-details', query: { id: course.id } }">
+                    <img class="img-fluid" 
+                        :src="'data:image/jpeg;base64,' + course.coverImage" 
+                        style="width: 500px; aspect-ratio: 4 / 3; object-fit: cover;"/>
                   </router-link>
                   <div class="price combo">
-                    <h3>FREE</h3>
+                    <h3>{{ course.level }}</h3>
                   </div>
                 </div>
                 <div class="product-content">
@@ -54,21 +56,16 @@
                   <div class="course-info d-flex align-items-center">
                     <div class="rating-img d-flex align-items-center">
                       <img src="@/assets/img/icon/icon-01.svg" alt="" />
-                      <p>7+ Lesson</p>
+                      <p>+ {{ course.sections.length }} Section</p>
                     </div>
-                    <div class="course-view d-flex align-items-center">
+                    <!-- <div class="course-view d-flex align-items-center">
                       <img src="@/assets/img/icon/icon-02.svg" alt="" />
                       <p>7hr 30min</p>
-                    </div>
+                    </div> -->
                   </div>
                   <div class="d-flex align-items-center justify-content-between">
                     <div class="rating m-0">
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star filled me-1"></i>
-                      <i class="fas fa-star me-1"></i>
-                      <span class="d-inline-block average-rating"><span>4.6</span> (15)</span>
+                      <span class="d-inline-block" style="color: #f66962;"><span>{{ course.price }}</span>USD</span>
                     </div>
                     <div class="all-btn all-category d-flex align-items-center">
                       <router-link to="/pages/checkout" class="btn btn-primary">BUY NOW</router-link>
@@ -182,7 +179,7 @@ export default {
       axios.get(API_URL + "/getNewCourse")
       .then(courses => {
         this.newCourses = courses.data
-        console.log("Truy xuất khóa học mới thành công")
+        console.log("Truy xuất khóa học mới thành công", courses)
       })
       .catch(error => {
         console.log("Truy xuất khóa học mới thất bại", error)

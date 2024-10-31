@@ -211,7 +211,7 @@
       </div>
       <Carousel :settings="settings" :breakpoints="breakpoints">
         <Slide
-          v-for="item in dashboard"
+          v-for="item in cates"
           :key="item.id"
           class="owl-carousel mentoring-course owl-theme"
         >
@@ -219,13 +219,14 @@
             <div class="feature-bg">
               <div class="feature-header">
                 <div class="feature-icon">
-                  <img :src="require(`@/assets/img/${item.img}`)" alt="" />
+                  <img :src="'data:image/jpeg;base64,' + item.coverImage"
+                  style="width: 100px; aspect-ratio: 1/1; object-fit: cover;"/>
                 </div>
                 <div class="feature-cont">
-                  <div class="feature-text">{{ item.Development }}</div>
+                  <div class="feature-text">{{ item.categoryName }}</div>
                 </div>
               </div>
-              <p>{{ item.Instructors }}</p>
+              <p>{{ item.numberUser }} Instructors</p>
             </div>
           </div>
         </Slide>
@@ -239,10 +240,11 @@
 </template>
 <script>
 import { Carousel, Pagination, Slide } from "vue3-carousel";
-import dashboard from "@/assets/json/dashboard.json";
 import "vue3-carousel/dist/carousel.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import axios from 'axios';
+const API_URL = 'http://localhost:8080';
 export default {
   components: {
     Carousel,
@@ -252,7 +254,7 @@ export default {
   data() {
     return {
       Category: ["Category", "Angular", "Node Js", "React", "Python"],
-      dashboard: dashboard,
+      cates: []
     };
   },
   setup() {
@@ -277,10 +279,23 @@ export default {
       },
     };
   },
+  created(){
+    this.getCateNumberCourse()
+  },
   methods: {
     submitForm() {
       this.$router.push("/course-list");
     },
+    getCateNumberCourse(){
+      axios.get(API_URL + "/getCateNumberUser")
+      .then(cate => {
+        this.cates = cate.data
+        console.log("Truy xuất loại khóa học thành công", cate)
+      })
+      .catch(error => {
+        console.log("Truy xuất loại khóa học thất bại", error)
+      })
+    }
   },
   mounted() {
     this.$nextTick(() => {

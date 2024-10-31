@@ -5,299 +5,33 @@
     <section class="page-content course-sec course-lesson">
       <div class="container" style="margin-top: 30px;">
         <div class="row">
-          <div class="col-lg-3">
+          <div class="col-lg-4">
             <!-- Course Lesson -->
-            <div class="lesson-group">
+            <div class="lesson-group" v-for="(section, index) in sections" :key="index">
               <div class="course-card">
                 <h6 class="cou-title">
                   <a
                     class="collapsed"
                     data-bs-toggle="collapse"
-                    href="#collapseOne"
                     aria-expanded="false"
-                    >Chapter 1 <span>5 Lessons</span>
+                    @click="viewSectionToggle(section.id)"
+                    >{{ section.title }} <span>{{ section.lectures.length }} Lessons</span>
                   </a>
                 </h6>
-                <div id="collapseOne" class="card-collapse collapse" style="">
+                <div class="card-collapse" v-if="viewSection[section.id]">
                   <div class="progress-stip">
                     <div
                       class="progress-bar bg-success progress-bar-striped active-stip"
                     ></div>
                   </div>
-                  <div class="student-percent lesson-percent">
+                  <!-- <div class="student-percent lesson-percent">
                     <p>10hrs<span>50%</span></p>
-                  </div>
+                  </div> -->
                   <ul>
-                    <li>
-                      <p class="play-intro">Introduction</p>
+                    <li v-for="(lecture, index) in section.lectures" :key="index">
+                      <p class="play-intro">{{ lecture.title }}</p>
                       <div>
                         <img src="@/assets/img/icon/play-icon.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>Course Introduction</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>About the Exam</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>About the Course</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>Building Our Scenario</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>Learnings</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="course-card">
-                <h6 class="cou-title">
-                  <a
-                    class="collapsed"
-                    data-bs-toggle="collapse"
-                    href="#course2"
-                    aria-expanded="false"
-                    >Chapter 2 <span>8 Lessons</span>
-                  </a>
-                </h6>
-                <div id="course2" class="card-collapse collapse" style="">
-                  <div class="progress-stip">
-                    <div
-                      class="progress-bar bg-success progress-bar-striped active-stip"
-                    ></div>
-                  </div>
-                  <div class="student-percent lesson-percent">
-                    <p>10hrs<span>50%</span></p>
-                  </div>
-                  <ul>
-                    <li>
-                      <p class="play-intro">Introduction</p>
-                      <div>
-                        <img src="@/assets/img/icon/play-icon.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>Course Introduction</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>About the Exam</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>About the Course</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>Building Our Scenario</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>Learnings</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="course-card">
-                <h6 class="cou-title">
-                  <a
-                    class="collapsed"
-                    data-bs-toggle="collapse"
-                    href="#course3"
-                    aria-expanded="false"
-                    >Chapter 3 <span>7 Lessons</span>
-                  </a>
-                </h6>
-                <div id="course3" class="card-collapse collapse" style="">
-                  <div class="progress-stip">
-                    <div
-                      class="progress-bar bg-success progress-bar-striped active-stip"
-                    ></div>
-                  </div>
-                  <div class="student-percent lesson-percent">
-                    <p>12hrs<span>50%</span></p>
-                  </div>
-                  <ul>
-                    <li>
-                      <p class="play-intro">Introduction</p>
-                      <div>
-                        <img src="@/assets/img/icon/play-icon.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>Course Introduction</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>About the Exam</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>About the Course</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>Building Our Scenario</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>Learnings</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="course-card">
-                <h6 class="cou-title">
-                  <a
-                    class="collapsed"
-                    data-bs-toggle="collapse"
-                    href="#coursefour"
-                    aria-expanded="false"
-                    >Chapter 4 <span>5 Lessons</span>
-                  </a>
-                </h6>
-                <div id="coursefour" class="card-collapse collapse">
-                  <div class="progress-stip">
-                    <div
-                      class="progress-bar bg-success progress-bar-striped active-stip"
-                    ></div>
-                  </div>
-                  <div class="student-percent lesson-percent">
-                    <p>8hrs<span>50%</span></p>
-                  </div>
-                  <ul>
-                    <li>
-                      <p class="play-intro">Introduction</p>
-                      <div>
-                        <img src="@/assets/img/icon/play-icon.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>Course Introduction</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>About the Exam</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>About the Course</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>Building Our Scenario</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>Learnings</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="course-card">
-                <h6 class="cou-title">
-                  <a
-                    class="collapsed"
-                    data-bs-toggle="collapse"
-                    href="#coursefive"
-                    aria-expanded="false"
-                    >Chapter 5 <span>8 Lessons</span>
-                  </a>
-                </h6>
-                <div id="coursefive" class="card-collapse collapse">
-                  <div class="progress-stip">
-                    <div
-                      class="progress-bar bg-success progress-bar-striped active-stip"
-                    ></div>
-                  </div>
-                  <div class="student-percent lesson-percent">
-                    <p>15hrs<span>40%</span></p>
-                  </div>
-                  <ul>
-                    <li>
-                      <p class="play-intro">Introduction</p>
-                      <div>
-                        <img src="@/assets/img/icon/play-icon.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>Course Introduction</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>About the Exam</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>About the Course</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>Building Our Scenario</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
-                      </div>
-                    </li>
-                    <li>
-                      <p>Learnings</p>
-                      <div>
-                        <img src="@/assets/img/icon/lock.svg" alt="" />
                       </div>
                     </li>
                   </ul>
@@ -306,7 +40,7 @@
             </div>
             <!-- /Course Lesson -->
           </div>
-          <div class="col-lg-9">
+          <div class="col-lg-8">
             <!-- Introduction -->
             <div class="student-widget lesson-introduction">
               <div class="lesson-widget-group">
@@ -571,6 +305,8 @@
     <!-- /Course Lesson -->
 </template>
 <script>
+  import * as StompJs from '@stomp/stompjs';
+  import SockJS from 'sockjs-client';
   import axios from 'axios';
   const API_URL = 'http://localhost:8080';
   export default {
@@ -587,49 +323,41 @@
         editCommentText:{},
         postComment:"",
         comments:[],
+        sections: [],
         viewPostReply:{},
         viewEditComment:{},
+        viewSection: {},
         buttonNumberShowComment: {},
-        stompClient: null
       };
     },
     created(){
-      // this.connectSocket()
+      this.connectSocket()
       this.resetForm()
       this.getCommentInLesson(this.lecture.id)
+      this.getSections(31)
     },
     methods:{
-      // connectSocket(){
-      //   this.stompClient = new Client({
-      //   webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
-      //     reconnectDelay: 50000,
-      //     debug: function (str) {
-      //       console.log(str);
-      //     },
-      //     onConnect: () => {
-      //       // Đăng ký vào channel nhận comments
-      //       this.stompClient.subscribe('/topic/comments', (message) => {
-      //         if (message.body) {
-      //           this.comments.push(JSON.parse(message.body));
-      //           console.log(this.comment)
-      //         }
-      //       });
-      //     },
-      //     onStompError: (frame) => {
-      //           console.error('Broker reported error: ' + frame.headers['message']);
-      //     },
-      //   });
-        
-      //   this.stompClient.activate(); // Kích hoạt client để kết nối
-      // },
-      // sendComment(comment) {
-      //   if (this.stompClient && this.stompClient.connected) {
-      //     this.stompClient.publish({
-      //       destination: '/app/comment',
-      //       body: JSON.stringify(comment),
-      //     });
-      //   }
-      //  },
+      connectSocket(){
+        const stompClient = new StompJs.Client({
+        webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+        debug: (str) => { console.log(str); }, // Hiển thị thông tin gỡ lỗi nếu cần
+        onConnect: (frame) => {
+          console.log("Connected to WebSocket server!", frame);
+          stompClient.subscribe('/topic/comments', (message) => {
+            console.log("Load data comment", JSON.parse(message))
+          });
+          },
+          onStompError: (frame) => {
+            console.error('Broker reported error: ' + frame.headers['message']);
+            console.error('Additional details: ' + frame.body);
+          }
+      });
+      stompClient.activate(); // Kích hoạt client STOMP
+      },
+      beforeDestroy() {
+        // Ngắt kết nối khi component bị hủy
+        stompClient.deactivate();
+      },
       getCommentInLesson(idLecture){
         axios.get(API_URL + `/getCommentLecture/${idLecture}`)
         .then((comment) => {
@@ -729,6 +457,16 @@
           console.log("Không phải quyền người dùng")
         }
       },
+      getSections(courseId){
+        axios.get(API_URL + `/getSectionInCourse/${courseId}`)
+        .then(sections => {
+          this.sections = sections.data
+          console.log("Tải lên các chương học thành công")
+        })
+        .catch(error => {
+          console.log("Tải lên các chương học thất bại", error)
+        })
+      },
       viewPostReplyToggle(commentId){
         this.viewPostReply[commentId] = !this.viewPostReply[commentId]
         this.viewEditComment[commentId] = false
@@ -737,6 +475,9 @@
         this.viewEditComment[commentId] = !this.viewEditComment[commentId]
         this.editCommentText[commentId] = textComment
         this.viewPostReply[commentId] = false
+      },
+      viewSectionToggle(sectionId){
+        this.viewSection[sectionId] = !this.viewSection[sectionId]
       },
       buttonNumberShowCommentToggle(commentId){
         this.buttonNumberShowComment[commentId] = !this.buttonNumberShowComment[commentId]

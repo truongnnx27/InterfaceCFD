@@ -26,33 +26,32 @@
           <div class="course-box trend-box">
             <div class="product trend-product">
               <div class="product-img">
-                <router-link to="/course/course-details">
+                <router-link :to="{ path: '/course/course-details', query: { id: item.id } }">
                   <img
                     class="img-fluid"
                     alt=""
-                    :src="require(`@/assets/img/course/${item.img}`)"
-                  />
+                    :src="'data:image/jpeg;base64,' + item.coverImage"/>
                 </router-link>
-                <div class="price">
+                <!-- <div class="price">
                   <h3>
-                    {{ item.amt }} <span>{{ item.amt1 }}</span>
+                    {{ null }} <span>{{ null }}</span>
                   </h3>
-                </div>
+                </div> -->
               </div>
               <div class="product-content">
                 <div class="course-group d-flex">
                   <div class="course-group-img d-flex">
-                    <router-link to="/instructor/instructor-profile"
+                    <!-- <router-link to="/instructor/instructor-profile"
                       ><img
                         :src="require(`@/assets/img/user/${item.img1}`)"
                         alt=""
                         class="img-fluid"
-                    /></router-link>
+                    /></router-link> -->
                     <div class="course-name">
                       <h4>
-                        <router-link to="/instructor/instructor-profile">{{ item.name }}</router-link>
+                        <router-link to="/instructor/instructor-profile">{{ item.fullNameIntructor }}</router-link>
                       </h4>
-                      <p>{{ item.instructor }}</p>
+                      <p>Intructor</p>
                     </div>
                   </div>
                   <div
@@ -62,30 +61,30 @@
                   </div>
                 </div>
                 <h3 class="title text-start">
-                  <router-link to="/course/course-details">{{ item.title }}</router-link>
+                  <router-link :to="{ path: '/course/course-details', query: { id: item.id } }">{{ item.title }}</router-link>
                 </h3>
                 <div class="course-info d-flex align-items-center">
                   <div class="rating-img d-flex align-items-center">
                     <img src="@/assets/img/icon/icon-01.svg" alt="" class="img-fluid" />
-                    <p>{{ item.lesson }}</p>
+                    <p>+{{ item.numberSection }} Section</p>
                   </div>
                   <div class="course-view d-flex align-items-center">
                     <img src="@/assets/img/icon/icon-02.svg" alt="" class="img-fluid" />
-                    <p>{{ item.min }}</p>
+                    <p>{{ null }}</p>
                   </div>
                 </div>
                 <div class="rating d-flex align-items-center">
                   <div class="rating m-0">	
+                    <!-- <i class="fas fa-star filled me-1"></i>
                     <i class="fas fa-star filled me-1"></i>
                     <i class="fas fa-star filled me-1"></i>
                     <i class="fas fa-star filled me-1"></i>
-                    <i class="fas fa-star filled me-1"></i>
-                    <i class="fas fa-star me-1"></i>
-                    <span class="d-inline-block average-rating"><span>4.0</span> (15)</span>
+                    <i class="fas fa-star me-1"></i> -->
+                    <span class="d-inline-block average-rating"><span>+ {{ item.numberUserPayment }}</span> Student payment</span>
                   </div>
                   <div class="all-btn all-category d-flex align-items-center">
-                  <router-link to="/pages/checkout" class="btn btn-primary">BUY NOW</router-link>
-                </div>
+                    <router-link to="/pages/checkout" class="btn btn-primary">BUY NOW</router-link>
+                  </div>
                 </div>                
               </div>
             </div>
@@ -105,9 +104,10 @@
 <script>
 import AOS from "aos";
 import "aos/dist/aos.css";
-import trendingcourse from "@/assets/json/trendingcourse.json";
 import { Carousel, Pagination, Slide } from "vue3-carousel";
 import "vue3-carousel/dist/carousel.css";
+import axios from "axios";
+const API_URL = 'http://localhost:8080';
 export default {
   components: {
     Carousel,
@@ -116,7 +116,7 @@ export default {
   },
   data() {
     return {
-      trendingcourse: trendingcourse,
+      trendingcourse: [],
     };
   },
   setup() {
@@ -141,7 +141,21 @@ export default {
       },
     };
   },
-
+  created(){
+    this.getBestSale()
+  },
+  methods: {
+    getBestSale(){
+      axios.get(API_URL + "/getCoursBestSale")
+      .then(course => {
+        this.trendingcourse = course.data
+        console.log("Truy xuất khóa học bán chạy thành công", course)
+      })
+      .catch(error => {
+        console.log("Truy xuất khóa học bán chạy thất bại", error)
+      })
+    }
+  },
   mounted() {
     this.$nextTick(() => {
       AOS.init();
